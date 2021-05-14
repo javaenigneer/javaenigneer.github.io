@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-flash.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/lfavicon-32x32-next.png?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="FastDFS,Java,Linux," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="我来了，哈哈哈 今天我们来讲FastDFS的应用，来吧，开始我们的表演。。。。 简介：介绍： FastDFS是以C语言开发的一项开源轻量级分布式文件系统，他对文件进行管理，主要功能有：文件存储，文件同步，文件访问（文件上传&#x2F;下载）,特别适合以文件为载体的在线服务，如图片网站，视频网站等分布式文件系统： 基于客户端&#x2F;服务器的文件存储系统 对等特性允许一些系统扮演客户端和服务器的双重角色，可供多个用户">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FastDFS在Linux下的安装及使用">
+<meta property="og:url" content="https://javaenigneer.github.io/2020/03/30/FastDFS%E5%9C%A8Linux%E4%B8%8B%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="CodeWorld | 收废铁">
+<meta property="og:description" content="我来了，哈哈哈 今天我们来讲FastDFS的应用，来吧，开始我们的表演。。。。 简介：介绍： FastDFS是以C语言开发的一项开源轻量级分布式文件系统，他对文件进行管理，主要功能有：文件存储，文件同步，文件访问（文件上传&#x2F;下载）,特别适合以文件为载体的在线服务，如图片网站，视频网站等分布式文件系统： 基于客户端&#x2F;服务器的文件存储系统 对等特性允许一些系统扮演客户端和服务器的双重角色，可供多个用户">
+<meta property="og:image" content="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/03/21/53161584758497117.png">
+<meta property="og:image" content="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/03/21/17761584758775926.png">
+<meta property="og:image" content="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/03/21/57481584761653374.png">
+<meta property="og:image" content="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/03/21/27861584761944224.png">
+<meta property="og:image" content="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/03/21/52371584762649638.png">
+<meta property="article:published_time" content="2020-03-30T02:04:38.000Z">
+<meta property="article:modified_time" content="2020-03-30T03:32:30.000Z">
+<meta property="article:author" content="CodeWorld">
+<meta property="article:tag" content="FastDFS">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/03/21/53161584758497117.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://javaenigneer.github.io/2020/03/30/FastDFS在Linux下的安装及使用/"/>
+
+
+
+
+
+  <title>FastDFS在Linux下的安装及使用 | CodeWorld | 收废铁</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CodeWorld | 收废铁</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">CodeWorld</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://javaenigneer.github.io/2020/03/30/FastDFS%E5%9C%A8Linux%E4%B8%8B%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="CodeWorld">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CodeWorld | 收废铁">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">FastDFS在Linux下的安装及使用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-30T10:04:38+08:00">
+                2020-03-30
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2020-03-30T11:32:30+08:00">
+                2020-03-30
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/03/30/FastDFS%E5%9C%A8Linux%E4%B8%8B%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/03/30/FastDFS%E5%9C%A8Linux%E4%B8%8B%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/03/30/FastDFS%E5%9C%A8Linux%E4%B8%8B%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8/" class="leancloud_visitors" data-flag-title="FastDFS在Linux下的安装及使用">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>我来了，哈哈哈</p>
+<p>今天我们来讲FastDFS的应用，来吧，开始我们的表演。。。。</p>
+<h2 id="简介："><a href="#简介：" class="headerlink" title="简介："></a>简介：</h2><p>介绍：</p>
+<pre><code>FastDFS是以C语言开发的一项开源轻量级分布式文件系统，他对文件进行管理，主要功能有：文件存储，文件同步，文件访问（文件上传/下载）,特别适合以文件为载体的在线服务，如图片网站，视频网站等</code></pre><p>分布式文件系统：</p>
+<pre><code>基于客户端/服务器的文件存储系统
+对等特性允许一些系统扮演客户端和服务器的双重角色，可供多个用户访问的服务器，比如，用户可以“发表”一个允许其他客户机访问的目录，一旦被访问，这个目录对客户机来说就像使用本地驱动器一样</code></pre><h3 id="上传交互过程"><a href="#上传交互过程" class="headerlink" title="上传交互过程"></a>上传交互过程</h3><pre><code>1.Client访问Tracker上传到Storage，不需要附加参数；
+Tracker返回一台可用的Storage
+Client直接和Storage通讯完成文件上传</code></pre><h3 id="下载交互过程"><a href="#下载交互过程" class="headerlink" title="下载交互过程"></a>下载交互过程</h3><pre><code>Client访问Tracker下载文件的Storage，参数为文件表识
+Tracker返回一台可用的Storage
+Client直接和Storage通讯完成文件下载</code></pre><blockquote>
+<p>需要说明的是 Client为使用FastDFS服务的调用方，Client也应该是一台服务器，它对Tracker和Storage的调用均为服务器间的调用</p>
+</blockquote>
+<h2 id="OK，说了这么多，我们开始我们的安装教程。。。"><a href="#OK，说了这么多，我们开始我们的安装教程。。。" class="headerlink" title="OK，说了这么多，我们开始我们的安装教程。。。"></a>OK，说了这么多，我们开始我们的安装教程。。。</h2><p>本教程是在所有操作均在Centos7.X环境下进行，在其他版本应该也可以吧，，哈哈哈哈</p>
+<h2 id="1-教程开始："><a href="#1-教程开始：" class="headerlink" title="1.教程开始："></a>1.教程开始：</h2><h3 id="1-1单节点FastDFS"><a href="#1-1单节点FastDFS" class="headerlink" title="1.1单节点FastDFS"></a>1.1单节点FastDFS</h3><p>整个安装过程非常复杂，很容易出错，建议多次备份<br>我们不打算安装多台虚拟机，因此会把tracker和Storage都安装在一起</p>
+<p>资料下载：<a href="https://pan.baidu.com/s/1BWaCQZtcLFKkAhbGkB6CWA" target="_blank" rel="noopener" title="FastDFS文件">FastDFS文件</a></p>
+<p>提取码：6299</p>
+<h4 id="1-1-1安装gcc"><a href="#1-1-1安装gcc" class="headerlink" title="1.1.1安装gcc"></a>1.1.1安装gcc</h4><p>GCC用来对C语言代码进行编译运行，用yum命令安装</p>
+<p><code>yum -y install gcc</code></p>
+<p>后面会用到解压命令（unzip），所以这里可以用yum把unzip也安装一下</p>
+<p><code>yum install -y unzip zip</code></p>
+<h4 id="1-1-2-安装libevent"><a href="#1-1-2-安装libevent" class="headerlink" title="1.1.2 安装libevent"></a>1.1.2 安装libevent</h4><p><code>yum -y install libevent</code></p>
+<p>####1.1.3 安装 libfastcommon-master</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">解压刚刚我们上传的libfastcommon-master</span><br><span class="line">unzip libfastcommon-master.zip</span><br><span class="line"></span><br><span class="line">进入解压完成的目录</span><br><span class="line">cd libfastcommon-master</span><br><span class="line"></span><br><span class="line">编译并且安装：</span><br><span class="line">./make</span><br><span class="line">./make.sh install</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-1-4-安装fastdfs"><a href="#1-1-4-安装fastdfs" class="headerlink" title="1.1.4 安装fastdfs"></a>1.1.4 安装fastdfs</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">tar -zxvf FastDFS_v5<span class="number">.08</span>.tar.gz</span><br><span class="line"></span><br><span class="line">cd FastDFS</span><br><span class="line"></span><br><span class="line">./make.sh</span><br><span class="line">./make.sh install</span><br></pre></td></tr></table></figure>
+
+<p>如果安装成功，会看到/etc/init.d/下提供的脚本文件</p>
+<p><code>ll /etc/init.d/ | grep fdfs</code></p>
+<p><img src="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/03/21/53161584758497117.png" alt=""></p>
+<ul>
+<li>fdfs_trackerd 是tracker启动脚本</li>
+<li>fdfs——storaged 是storage启动脚本</li>
+</ul>
+<p>能够在/etc/fdfs目录下看到默认的配置文件模版：</p>
+<p><code>ll /etc/fdfs/</code></p>
+<p><img src="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/03/21/17761584758775926.png" alt=""></p>
+<ul>
+<li>tarcker.conf.sample 是tracker的配置文件模板</li>
+<li>storage.conf.sample 是storage的配置文件模版</li>
+<li>client.conf.sample 是客户端的配置文件模版</li>
+</ul>
+<h4 id="1-1-5配置并启动tracker服务"><a href="#1-1-5配置并启动tracker服务" class="headerlink" title="1.1.5配置并启动tracker服务"></a>1.1.5配置并启动tracker服务</h4><p>FastDFS的tracker和storage在刚刚的安装过程中，都已经被安装了，因此我们安装这两种角色的方式是一样的。不同的是，两种需要不同的配置文件。<br>我们要启动tracker，就修改刚刚看到的<code>tarcker.conf</code>，并且启动<code>fdfs_trackerd</code>脚本即可。</p>
+<p>1.首先将模版文件复制<br><code>cp /etc/fdfs/tracker.conf.sample /etc/fdfs/tracker.conf</code></p>
+<p>2.修改复制后的配置文件<br> <code>vim /etc/fdfs/tracker.conf</code><br>    #修改内容如下：<br>    base_path=/feicheng/tracker                 # 存储日志和数据的根目录<br>3.新建目录：<br><code>mkdir -p /feicheng/tracker</code></p>
+<p>注意：关闭防火墙(如果不关闭防火墙，在防火墙中打开端口22122)<br><code>chkconfig iptables off</code><br>4.启动和停止</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">启动tracker服务器：/etc/init.d/fdfs_trackerd start</span><br><span class="line">停止tracker服务器：/etc/init.d/fdfs_trackerd stop不过安装过程中，fdfs已经被设置为系统服务，我们可以采用熟悉的服务启动方式：</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">service fdfs_trackerd start # 启动fdfs_trackerd服务，停止用stop</span><br></pre></td></tr></table></figure>
+<p>检查FastDFS Tracker Server是否启动成功：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">ps -ef | grep fdfs_trackerd</span><br></pre></td></tr></table></figure>
+<p>设置tracker服务开机启动：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">chkconfig fdfs_trackerd on</span><br></pre></td></tr></table></figure>
+<h4 id="1-1-6配置并启动storage服务"><a href="#1-1-6配置并启动storage服务" class="headerlink" title="1.1.6配置并启动storage服务"></a>1.1.6配置并启动storage服务</h4><p>1.首先将模板文件复制<br><code>cp /etc/fdfs/storage.conf.sample /etc/fdfs/storage.conf</code></p>
+<p>2.修改复制后的配置文件<br><code>vim /etc/fdfs/storage.conf</code></p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"> #修改内容如下：</span><br><span class="line"> base_path=/feicheng/storage            # 数据和日志文件存储根目录 </span><br><span class="line"> </span><br><span class="line">store_path0=/feicheng/storage           # 第一个存储目录 </span><br><span class="line"></span><br><span class="line">tracker_server=192.168.2.7:22122       #  tracker服务器IP和端口</span><br></pre></td></tr></table></figure>
+<p>3.新建目录<br><code>mkdir -p /feicheng/storage</code></p>
+<p>注意关闭防火墙：（若不关闭防火墙，就打开端口22122）<br><code>chkconfig iptables off</code></p>
+<p>4.启动和停止：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">启动storage服务器：/etc/init.d/fdfs_storaged start</span><br><span class="line">关闭storage服务器：/etc/init.d/fdfs_storaged stop</span><br></pre></td></tr></table></figure>
+<p>推荐使用：<br><code>service fdfs_storaged start  # 启动fdfs_storaged服务，停止用stop</code></p>
+<p>设置storage服务开机启动：<br><code>chkconfig fdfs_storaged on</code></p>
+<p>查看服务是否启动：<br><code>ps -ef | grep fdfs</code></p>
+<p><img src="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/03/21/57481584761653374.png" alt=""></p>
+<h2 id="2-使用nginx访问FastDFS"><a href="#2-使用nginx访问FastDFS" class="headerlink" title="2.使用nginx访问FastDFS"></a>2.使用nginx访问FastDFS</h2><h3 id="2-1-为什么需要使用Nginx访问？"><a href="#2-1-为什么需要使用Nginx访问？" class="headerlink" title="2.1 为什么需要使用Nginx访问？"></a>2.1 为什么需要使用Nginx访问？</h3><p>FastDFS通过Tracker服务器,将文件放在Storage服务器存储，但是同组存储服务器之间需要进入文件复制，有同步延迟的问题。</p>
+<p>假设Tracker服务器将文件上传到了192.168.4.125，上传成功后文件ID已经返回给客户端。此时FastDFS存储集群机制会将这个文件同步到同组存储192.168.4.126，在文件还没有复制完成的情况下，客户端如果用这个文件ID在192.168.4.126上取文件,就会出现文件无法访问的错误。</p>
+<p>而fastdfs-nginx-module可以重定向文件连接到文件上传时的源服务器取文件,避免客户端由于复制延迟导致的文件无法访问错误</p>
+<h3 id="2-2安装fastdfs-nginx-module"><a href="#2-2安装fastdfs-nginx-module" class="headerlink" title="2.2安装fastdfs-nginx-module"></a>2.2安装fastdfs-nginx-module</h3><h4 id="2-2-1解压"><a href="#2-2-1解压" class="headerlink" title="2.2.1解压"></a>2.2.1解压</h4><p><code>tar -zxvf fastdfs-nginx-module_v1.16.tar.gz</code></p>
+<h4 id="2-2-2修改config"><a href="#2-2-2修改config" class="headerlink" title="2.2.2修改config"></a>2.2.2修改config</h4><p>1.进入src目录：<br><code>cd fastdfs-nginx-module/src/</code></p>
+<p>2.编辑config<br><code>vim config</code></p>
+<p>使用以下命令：<br><code>:%s+/usr/local/+/usr/+g</code></p>
+<p>将所有的/usr/local替换为 /usr，这个才是正确的目录:<br><img src="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/03/21/27861584761944224.png" alt=""></p>
+<h4 id="2-2-3配置nginx与FastDFS关联配置文件"><a href="#2-2-3配置nginx与FastDFS关联配置文件" class="headerlink" title="2.2.3配置nginx与FastDFS关联配置文件"></a>2.2.3配置nginx与FastDFS关联配置文件</h4><p>复制 fastdfs-nginx-module 源码中的配置文件到/etc/fdfs 目录， 并修改<br><code>cp /usr/local/feicheng/fastdfs-nginx-module/src/mod_fastdfs.conf /etc/fdfs/</code></p>
+<p><code>vi /etc/fdfs/mod_fastdfs.conf</code><br>修改以下配置：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">  connect_timeout=10      # 客户端访问文件连接超时时长（单位：秒）</span><br><span class="line"> tracker_server=192.168.2.7:22122    # tracker服务IP和端口</span><br><span class="line"></span><br><span class="line">url_have_group_name=true                # 访问链接前缀加上组名</span><br><span class="line"></span><br><span class="line">store_path0=/feicheng/storage            # 文件存储路径</span><br></pre></td></tr></table></figure>
+
+<p>复制 FastDFS 的部分配置文件到/etc/fdfs 目录<br><code>cd /usr/local/feicheng/FastDFS/conf/</code></p>
+<p><code>cp http.conf mime.types /etc/fdfs/</code></p>
+<h3 id="2-3安装Nginx插件"><a href="#2-3安装Nginx插件" class="headerlink" title="2.3安装Nginx插件"></a>2.3安装Nginx插件</h3><h4 id="2-3-1如果没有安装过nginx"><a href="#2-3-1如果没有安装过nginx" class="headerlink" title="2.3.1如果没有安装过nginx"></a>2.3.1如果没有安装过nginx</h4><ul>
+<li><p>安装nginx的依赖库<br>   <code>yum -y install gcc pcre pcre-devel zlib zlib-devel openssl openssl-devel</code></p>
+</li>
+<li><p>解压安装包</p>
+<pre><code>`tar -zxvf nginx-1.10.0.tar.gz`</code></pre></li>
+<li><p>配置nginx安装包，并指定fastdfs-nginx-model</p>
+<pre><code>`cd nginx-1.10.0`</code></pre><p><code>./configure --prefix=/opt/nginx --sbin-path=/usr/bin/nginx --add-module=/usr/local/feicheng/fastdfs-nginx-module/src</code></p>
+</li>
+</ul>
+<p><strong>注意</strong>：在执行./configure配置nginx参数的时候，需要将fastdfs-nginx-moudle源码作为模块编译进去。</p>
+<ul>
+<li>编译并安装<br>   <code>make &amp;&amp; make install</code><h4 id="2-3-2-如果安装过Nginx"><a href="#2-3-2-如果安装过Nginx" class="headerlink" title="2.3.2 如果安装过Nginx"></a>2.3.2 如果安装过Nginx</h4></li>
+</ul>
+<ol>
+<li><p>进入Nginx目录</p>
+<pre><code>`cd /usr/local/feicheng/nginx-1.10.0/`</code></pre></li>
+<li><p>配置FastDFS模块<br>   <code>./configure --prefix=/opt/nginx --sbin-path=/usr/bin/nginx --add-module=/usr/local/feicheng/fastdfs-nginx-module/src</code><br>注意：这次配置时，要添加fastdfs-nginx-moudle模块</p>
+</li>
+<li><p>编译，注意，这次不要安装（install）<br>   <code>make</code></p>
+</li>
+<li><p>替换nginx二进制文件<br>   <code>mv /usr/bin/nginx /usr/bin/nginx-bak</code><br>用新编译的nginx启动文件替代原来的：</p>
+<pre><code>`cp objs/nginx /usr/bin/`</code></pre><h4 id="2-2-3启动Nginx"><a href="#2-2-3启动Nginx" class="headerlink" title="2.2.3启动Nginx"></a>2.2.3启动Nginx</h4><p>配置nginx整合fastdfs-module模块<br>我们需要修改nginx配置文件，在/opt/nginx/config/nginx.conf文件中：</p>
+</li>
+</ol>
+<p><code>vim  /opt/nginx/conf/nginx.conf</code></p>
+<p>将文件中，原来的<code>server 80{ ...}</code> 部分代码替换为如下代码：</p>
+<p>`server {<br>        listen       80;<br>        server_name  image.leyou.com;</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">	# 监听域名中带有group的，交给FastDFS模块处理</span><br><span class="line">    location ~/group([<span class="number">0</span>-<span class="number">9</span>])/ &#123;</span><br><span class="line">        ngx_fastdfs_module;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        root   html;</span><br><span class="line">        index  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    error_page   <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span>  /<span class="number">50</span>x.html;</span><br><span class="line">    location = /<span class="number">50</span>x.html &#123;</span><br><span class="line">        root   html;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;`</span><br></pre></td></tr></table></figure>
+<p>启动Nginx：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"> nginx	# 启动nginx</span><br><span class="line"> </span><br><span class="line"> nginx -s stop	# 停止nginx</span><br><span class="line"> </span><br><span class="line">nginx -s reload	# 重新载入配置文件</span><br></pre></td></tr></table></figure>
+<p>可通过ps -ef | grep nginx查看nginx是否已启动成功<br><img src="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/03/21/52371584762649638.png" alt=""></p>
+<h4 id="2-3-4设置Nginx为开机启动"><a href="#2-3-4设置Nginx为开机启动" class="headerlink" title="2.3.4设置Nginx为开机启动"></a>2.3.4设置Nginx为开机启动</h4><p>创建一个开机启动的脚本：<br><code>vim /etc/init.d/nginx</code></p>
+<p>添加以下内容：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">#!/bin/sh</span><br><span class="line">#</span><br><span class="line"># nginx - this script starts and stops the nginx daemon</span><br><span class="line">#</span><br><span class="line"># chkconfig:   - 85 15</span><br><span class="line"># description:  NGINX is an HTTP(S) server, HTTP(S) reverse \</span><br><span class="line">#               proxy and IMAP/POP3 proxy server</span><br><span class="line"># processname: nginx</span><br><span class="line"># config:      /etc/nginx/nginx.conf</span><br><span class="line"># config:      /etc/sysconfig/nginx</span><br><span class="line"># pidfile:     /var/run/nginx.pid</span><br><span class="line"></span><br><span class="line"># Source function library.</span><br><span class="line">. /etc/rc.d/init.d/functions</span><br><span class="line"></span><br><span class="line"># Source networking configuration.</span><br><span class="line">. /etc/sysconfig/network</span><br><span class="line"></span><br><span class="line"># Check that networking is up.</span><br><span class="line">[ <span class="string">"$NETWORKING"</span> = <span class="string">"no"</span> ] &amp;&amp; exit <span class="number">0</span></span><br><span class="line"></span><br><span class="line">nginx=<span class="string">"/usr/bin/nginx"</span></span><br><span class="line">prog=$(basename $nginx)</span><br><span class="line"></span><br><span class="line">NGINX_CONF_FILE=<span class="string">"/opt/nginx/conf/nginx.conf"</span></span><br><span class="line"></span><br><span class="line">[ -f /etc/sysconfig/nginx ] &amp;&amp; . /etc/sysconfig/nginx</span><br><span class="line"></span><br><span class="line">lockfile=/<span class="keyword">var</span>/lock/subsys/nginx</span><br><span class="line"></span><br><span class="line">make_dirs() &#123;</span><br><span class="line">   # make required directories</span><br><span class="line">   user=`$nginx -V <span class="number">2</span>&gt;&amp;<span class="number">1</span> | grep <span class="string">"configure arguments:.*--user="</span> | sed <span class="string">'s/[^*]*--user=\([^ ]*\).*/\1/g'</span> -`</span><br><span class="line">   <span class="keyword">if</span> [ -n <span class="string">"$user"</span> ]; then</span><br><span class="line">      <span class="keyword">if</span> [ -z <span class="string">"`grep $user /etc/passwd`"</span> ]; then</span><br><span class="line">         useradd -M -s /bin/nologin $user</span><br><span class="line">      fi</span><br><span class="line">      options=`$nginx -V <span class="number">2</span>&gt;&amp;<span class="number">1</span> | grep <span class="string">'configure arguments:'</span>`</span><br><span class="line">      <span class="keyword">for</span> opt in $options; <span class="keyword">do</span></span><br><span class="line">          <span class="keyword">if</span> [ `echo $opt | grep <span class="string">'.*-temp-path'</span>` ]; then</span><br><span class="line">              value=`echo $opt | cut -d <span class="string">"="</span> -f <span class="number">2</span>`</span><br><span class="line">              <span class="keyword">if</span> [ ! -d <span class="string">"$value"</span> ]; then</span><br><span class="line">                  # echo "creating" $value</span><br><span class="line">                  mkdir -p $value &amp;&amp; chown -R $user $value</span><br><span class="line">              fi</span><br><span class="line">          fi</span><br><span class="line">       done</span><br><span class="line">    fi</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">start() &#123;</span><br><span class="line">    [ -x $nginx ] || exit <span class="number">5</span></span><br><span class="line">    [ -f $NGINX_CONF_FILE ] || exit <span class="number">6</span></span><br><span class="line">    make_dirs</span><br><span class="line">    echo -n $<span class="string">"Starting $prog: "</span></span><br><span class="line">    daemon $nginx -c $NGINX_CONF_FILE</span><br><span class="line">    retval=$?</span><br><span class="line">    echo</span><br><span class="line">    [ $retval -eq <span class="number">0</span> ] &amp;&amp; touch $lockfile</span><br><span class="line">    <span class="keyword">return</span> $retval</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">stop() &#123;</span><br><span class="line">    echo -n $<span class="string">"Stopping $prog: "</span></span><br><span class="line">    killproc $prog -QUIT</span><br><span class="line">    retval=$?</span><br><span class="line">    echo</span><br><span class="line">    [ $retval -eq <span class="number">0</span> ] &amp;&amp; rm -f $lockfile</span><br><span class="line">    <span class="keyword">return</span> $retval</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">restart() &#123;</span><br><span class="line">    configtest || <span class="keyword">return</span> $?</span><br><span class="line">    stop</span><br><span class="line">    sleep <span class="number">1</span></span><br><span class="line">    start</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">reload() &#123;</span><br><span class="line">    configtest || <span class="keyword">return</span> $?</span><br><span class="line">    echo -n $<span class="string">"Reloading $prog: "</span></span><br><span class="line">    killproc $nginx -HUP</span><br><span class="line">    RETVAL=$?</span><br><span class="line">    echo</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">force_reload() &#123;</span><br><span class="line">    restart</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">configtest() &#123;</span><br><span class="line">  $nginx -t -c $NGINX_CONF_FILE</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">rh_status() &#123;</span><br><span class="line">    status $prog</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">rh_status_q() &#123;</span><br><span class="line">    rh_status &gt;/dev/<span class="keyword">null</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> <span class="string">"$1"</span> in</span><br><span class="line">    start)</span><br><span class="line">        rh_status_q &amp;&amp; exit <span class="number">0</span></span><br><span class="line">        $<span class="number">1</span></span><br><span class="line">        ;;</span><br><span class="line">    stop)</span><br><span class="line">        rh_status_q || exit <span class="number">0</span></span><br><span class="line">        $<span class="number">1</span></span><br><span class="line">        ;;</span><br><span class="line">    restart|configtest)</span><br><span class="line">        $<span class="number">1</span></span><br><span class="line">        ;;</span><br><span class="line">    reload)</span><br><span class="line">        rh_status_q || exit <span class="number">7</span></span><br><span class="line">        $<span class="number">1</span></span><br><span class="line">        ;;</span><br><span class="line">    force-reload)</span><br><span class="line">        force_reload</span><br><span class="line">        ;;</span><br><span class="line">    status)</span><br><span class="line">        rh_status</span><br><span class="line">        ;;</span><br><span class="line">    condrestart|<span class="keyword">try</span>-restart)</span><br><span class="line">        rh_status_q || exit <span class="number">0</span></span><br><span class="line">            ;;</span><br><span class="line">    *)</span><br><span class="line">        echo $<span class="string">"Usage: $0 &#123;start|stop|status|restart|condrestart|try-restart|reload|force-reload|configtest&#125;"</span></span><br><span class="line">        exit <span class="number">2</span></span><br><span class="line">esac</span><br></pre></td></tr></table></figure>
+
+<p>修改文件权限，并加入服务列表<br>    # 修改权限<br>​    <code>chmod 777 /etc/init.d/nginx</code><br>    # 添加到服务列表<br>​    <code>chkconfig --add /etc/init.d/nginx</code></p>
+<p>设置开机启动<br><code>chkconfig nginx on</code></p>
+<p>OKOK，到这里我们的FastDFS部署安装就又完成了，是不是感觉很激动呢。。。哈哈哈</p>
+<p>不要激动，下面我会给出具体操作过程</p>
+<h2 id="FastDFS在Java中的使用教程："><a href="#FastDFS在Java中的使用教程：" class="headerlink" title="FastDFS在Java中的使用教程："></a>FastDFS在Java中的使用教程：</h2><h3 id="1-首先什么也不管，先来我们的Pom文件：（只引入了用到的依赖）"><a href="#1-首先什么也不管，先来我们的Pom文件：（只引入了用到的依赖）" class="headerlink" title="1.首先什么也不管，先来我们的Pom文件：（只引入了用到的依赖）"></a>1.首先什么也不管，先来我们的Pom文件：（只引入了用到的依赖）</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&lt;!-- FastDFS客户端 --&gt;</span><br><span class="line">       &lt;dependency&gt;</span><br><span class="line">           &lt;groupId&gt;com.github.tobato&lt;/groupId&gt;</span><br><span class="line">           &lt;artifactId&gt;fastdfs-client&lt;/artifactId&gt;</span><br><span class="line">           &lt;version&gt;1.26.1-RELEASE&lt;/version&gt;</span><br><span class="line">       &lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="2-引入我们的配置文件，使用SpringBoot开发快捷，只需要在我们的Application-yml中配置就可以了"><a href="#2-引入我们的配置文件，使用SpringBoot开发快捷，只需要在我们的Application-yml中配置就可以了" class="headerlink" title="2.引入我们的配置文件，使用SpringBoot开发快捷，只需要在我们的Application.yml中配置就可以了"></a>2.引入我们的配置文件，使用SpringBoot开发快捷，只需要在我们的Application.yml中配置就可以了</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">#启动端口</span><br><span class="line">server:</span><br><span class="line">  port: <span class="number">8081</span></span><br><span class="line">#图片上传</span><br><span class="line">fdfs:</span><br><span class="line">  so-timeout: 1501 #超时时间</span><br><span class="line">  connect-timeout: 601 #连接超时时间</span><br><span class="line">  thumb-image:   #缩略图</span><br><span class="line">    width: <span class="number">60</span></span><br><span class="line">    height: <span class="number">60</span></span><br><span class="line">  tracker-list: #tracker地址：你的虚拟机服务器地址+端口（默认是22122）</span><br><span class="line">    - 你的服务器IP:<span class="number">22122</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-好了，我们的基本工作完成了，接下来开始上菜。。。"><a href="#3-好了，我们的基本工作完成了，接下来开始上菜。。。" class="headerlink" title="3.好了，我们的基本工作完成了，接下来开始上菜。。。"></a>3.好了，我们的基本工作完成了，接下来开始上菜。。。</h3><h4 id="3-1-创建我们需要的基本类"><a href="#3-1-创建我们需要的基本类" class="headerlink" title="3.1 创建我们需要的基本类"></a>3.1 创建我们需要的基本类</h4><blockquote>
+<p>ImageResult</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.e17.upload.pojo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 图片返回Json数据</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lenovo</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImageResult</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 返回图片路径</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String src;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 返回的图片标题</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String title;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 构造方法</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> src</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> title</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ImageResult</span><span class="params">(String src, String title)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.src = src;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.title = title;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>MessageResult</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.e17.upload.pojo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 上传图片信息返回</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lenovo</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MessageResult</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 返回的状态 0--上传成功  1--上传失败</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Integer code;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 上传的信息</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String msg;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 返回的数据</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> T data;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 带数据的返回结果</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> code</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> msg</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> data</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MessageResult</span><span class="params">(Integer code, String msg, T data)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.code = code;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.msg = msg;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.data = data;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个就是我们响应给客服端的数据信息。很简单吧，在我们项目开发中都会有这些开发文档，我们只需要返回文档中的内容就可以了。。。:tw-1f506:</p>
+<h4 id="3-2-配置类："><a href="#3-2-配置类：" class="headerlink" title="3.2 配置类："></a>3.2 配置类：</h4><blockquote>
+<p>FastClientImporter</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.e17.upload.config;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.github.tobato.fastdfs.FdfsClientConfig;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.EnableMBeanExport;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Import;</span><br><span class="line"><span class="keyword">import</span> org.springframework.jmx.support.RegistrationPolicy;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lenovo</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@Import</span>(FdfsClientConfig<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">@<span class="title">EnableMBeanExport</span>(<span class="title">registration</span> </span>= RegistrationPolicy.IGNORE_EXISTING)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FastClientImporter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个配置类什么也不做，只需要配置在这里即可。。</p>
+<h2 id="4-我们的基本类就创建完了，很少吧，是的入门就是这么简单，下面开始我们的逻辑开始："><a href="#4-我们的基本类就创建完了，很少吧，是的入门就是这么简单，下面开始我们的逻辑开始：" class="headerlink" title="4.我们的基本类就创建完了，很少吧，是的入门就是这么简单，下面开始我们的逻辑开始："></a>4.我们的基本类就创建完了，很少吧，是的入门就是这么简单，下面开始我们的逻辑开始：</h2><h3 id="4-1-创建我们熟悉的Controller"><a href="#4-1-创建我们熟悉的Controller" class="headerlink" title="4.1 创建我们熟悉的Controller"></a>4.1 创建我们熟悉的Controller</h3><blockquote>
+<p>UploadController</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.e17.upload.controller;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.e17.upload.pojo.ImageResult;</span><br><span class="line"><span class="keyword">import</span> com.e17.upload.pojo.MessageResult;</span><br><span class="line"><span class="keyword">import</span> com.e17.upload.service.UploadService;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.http.ResponseEntity;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.PostMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestParam;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.multipart.MultipartFile;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 上传图片Controller</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lenovo</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"upload"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UploadController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span>(required = <span class="keyword">false</span>)</span><br><span class="line">    <span class="keyword">private</span> UploadService uploadService;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 上传图片</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> file</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@PostMapping</span>(<span class="string">"file"</span>)</span><br><span class="line">    <span class="keyword">public</span> ResponseEntity&lt;MessageResult&lt;ImageResult&gt;&gt; upload(<span class="meta">@RequestParam</span>(<span class="string">"file"</span>) MultipartFile file) &#123;</span><br><span class="line"></span><br><span class="line">        MessageResult&lt;ImageResult&gt; messageResult = <span class="keyword">this</span>.uploadService.upload(file);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ResponseEntity.ok(messageResult);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里会报错，不用慌张，是我们的Service没有创建。。。<br>下面就是我们的Service</p>
+<h3 id="4-2-创建我们的Service"><a href="#4-2-创建我们的Service" class="headerlink" title="4.2 创建我们的Service"></a>4.2 创建我们的Service</h3><blockquote>
+<p>UploadService</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.e17.upload.service;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.e17.upload.pojo.ImageResult;</span><br><span class="line"><span class="keyword">import</span> com.e17.upload.pojo.MessageResult;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.multipart.MultipartFile;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lenovo</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UploadService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 删除图片</span></span><br><span class="line">    <span class="function">MessageResult&lt;ImageResult&gt; <span class="title">upload</span><span class="params">(MultipartFile file)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3创建我们的Service实现类"><a href="#4-3创建我们的Service实现类" class="headerlink" title="4.3创建我们的Service实现类"></a>4.3创建我们的Service实现类</h3><blockquote>
+<p>UploadServiceImpl</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.e17.upload.service.impl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.e17.upload.pojo.ImageResult;</span><br><span class="line"><span class="keyword">import</span> com.e17.upload.pojo.MessageResult;</span><br><span class="line"><span class="keyword">import</span> com.e17.upload.service.UploadService;</span><br><span class="line"><span class="keyword">import</span> com.github.tobato.fastdfs.domain.StorePath;</span><br><span class="line"><span class="keyword">import</span> com.github.tobato.fastdfs.domain.ThumbImageConfig;</span><br><span class="line"><span class="keyword">import</span> com.github.tobato.fastdfs.service.FastFileStorageClient;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.lang.StringUtils;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.Logger;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.multipart.MultipartFile;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.imageio.ImageIO;</span><br><span class="line"><span class="keyword">import</span> java.awt.image.BufferedImage;</span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 上传Service</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lenovo</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UploadServiceImpl</span> <span class="keyword">implements</span> <span class="title">UploadService</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">   <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> FastFileStorageClient storageClient;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ThumbImageConfig thumbImageConfig;</span><br><span class="line">  </span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> List&lt;String&gt; CONTENT_TYPES = Arrays.asList(<span class="string">"image/gif"</span>, <span class="string">"image/jpeg"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger LOGGER = LoggerFactory.getLogger(UploadServiceImpl<span class="class">.<span class="keyword">class</span>)</span>;  </span><br><span class="line">  </span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 上传图片</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> file</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> MessageResult&lt;ImageResult&gt; <span class="title">upload</span><span class="params">(MultipartFile file)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 校验文件类型</span></span><br><span class="line">        String originalFilename = file.getOriginalFilename();</span><br><span class="line"></span><br><span class="line">        String contentType = file.getContentType();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!CONTENT_TYPES.contains(contentType)) &#123;</span><br><span class="line"></span><br><span class="line">            LOGGER.info(<span class="string">"文件不合法：&#123;&#125;"</span>, originalFilename);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> MessageResult&lt;&gt;(-<span class="number">1</span>, <span class="string">"文件不合法"</span>, <span class="keyword">new</span> ImageResult(<span class="keyword">null</span>, <span class="keyword">null</span>));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 校验文件内容</span></span><br><span class="line">            BufferedImage bufferedImage = ImageIO.read(file.getInputStream());</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (bufferedImage == <span class="keyword">null</span>) &#123;</span><br><span class="line"></span><br><span class="line">                LOGGER.info(<span class="string">"文件不合法：&#123;&#125;"</span> + originalFilename);</span><br><span class="line"></span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> MessageResult&lt;&gt;(-<span class="number">1</span>, <span class="string">"文件不合法"</span>, <span class="keyword">new</span> ImageResult(<span class="keyword">null</span>, <span class="keyword">null</span>));</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 将文件写入对应的储存地址</span></span><br><span class="line">            <span class="comment">// 将文件上传到FastDFS</span></span><br><span class="line">            <span class="comment">// 获取文件后缀名</span></span><br><span class="line">            String extension = StringUtils.substringAfterLast(file.getOriginalFilename(), <span class="string">"."</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 上传并生成缩略图</span></span><br><span class="line">            StorePath storePath = <span class="keyword">this</span>.storageClient.uploadFile(file.getInputStream(), file.getSize(), extension, <span class="keyword">null</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 返回图片Url</span></span><br><span class="line">            String imageUrl = “服务器Ip” + storePath.getFullPath();</span><br><span class="line"></span><br><span class="line">            LOGGER.info(<span class="string">"图片路径：&#123;&#125;"</span>, imageUrl);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> MessageResult&lt;&gt;(<span class="number">0</span>, <span class="string">"上传成功"</span>, <span class="keyword">new</span> ImageResult(imageUrl, originalFilename));</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line"></span><br><span class="line">            e.printStackTrace();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> MessageResult&lt;&gt;(-<span class="number">1</span>, <span class="string">"上传失败"</span>, <span class="keyword">new</span> ImageResult(<span class="keyword">null</span>, <span class="keyword">null</span>));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里就是我们实现逻辑的地方，哈哈哈，只是简单的上传功能</p>
+<p>注意：这里的服务器IP，就是你的服务器的IP地址，我们不是配置了Nginx吗，我们可以实现设置一个自定义域名：<br>例如：<a href="http://image.fc.com" target="_blank" rel="noopener">http://image.fc.com</a> </p>
+<p>喜欢的在下面可以评论或者留言哦，有什么问题可以评论留言<br>感谢你的浏览，么么哒。。。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    CodeWorld
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://javaenigneer.github.io/2020/03/30/FastDFS%E5%9C%A8Linux%E4%B8%8B%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8/" title="FastDFS在Linux下的安装及使用">https://javaenigneer.github.io/2020/03/30/FastDFS%E5%9C%A8Linux%E4%B8%8B%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/FastDFS/" rel="tag"># FastDFS</a>
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/30/SpringBoot%E9%9B%86%E6%88%90QQ%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E9%99%86/" rel="next" title="SpringBoot集成QQ第三方登陆">
+                <i class="fa fa-chevron-left"></i> SpringBoot集成QQ第三方登陆
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/30/%E5%A6%82%E4%BD%95%E5%BC%80%E5%8F%91%E4%B8%A4%E6%AD%A5%E9%AA%8C%E8%AF%81%E5%8A%9F%E8%83%BD/" rel="prev" title="如何开发两步验证功能">
+                如何开发两步验证功能 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.gif"
+                alt="CodeWorld" />
+            
+              <p class="site-author-name" itemprop="name">CodeWorld</p>
+              <p class="site-description motion-element" itemprop="description">越努力，越幸运</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/javaenigneer" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="1692454247@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://github.com/" title="Github" target="_blank">Github</a>
+                  </li>
+                
+              </ul>
+              <div id="days"></div>
+<script>
+function show_date_time(){
+    window.setTimeout("show_date_time()", 1000);
+    BirthDay=new Date("04/10/2019 12:13:14");
+    today=new Date();
+    timeold=(today.getTime()-BirthDay.getTime());
+    sectimeold=timeold/1000
+    secondsold=Math.floor(sectimeold);
+    msPerDay=24*60*60*1000
+    e_daysold=timeold/msPerDay
+    daysold=Math.floor(e_daysold);
+    e_hrsold=(e_daysold-daysold)*24;
+    hrsold=setzero(Math.floor(e_hrsold));
+    e_minsold=(e_hrsold-hrsold)*60;
+    minsold=setzero(Math.floor((e_hrsold-hrsold)*60));
+    seconds=setzero(Math.floor((e_minsold-minsold)*60));
+    document.getElementById('days').innerHTML="已运行 "+daysold+" 天 "+hrsold+" 小时 "+minsold+" 分 "+seconds+" 秒";
+}
+function setzero(i) {
+    if (i<10) {
+        i="0" + i
+    };
+    return i;
+}
+show_date_time();
+</script>
+
+            </div>
+          
+
+          <div id="days"></div>
+<script>
+function show_date_time(){
+    window.setTimeout("show_date_time()", 1000);
+    BirthDay=new Date("04/10/2019 12:13:14");
+    today=new Date();
+    timeold=(today.getTime()-BirthDay.getTime());
+    sectimeold=timeold/1000
+    secondsold=Math.floor(sectimeold);
+    msPerDay=24*60*60*1000
+    e_daysold=timeold/msPerDay
+    daysold=Math.floor(e_daysold);
+    e_hrsold=(e_daysold-daysold)*24;
+    hrsold=setzero(Math.floor(e_hrsold));
+    e_minsold=(e_hrsold-hrsold)*60;
+    minsold=setzero(Math.floor((e_hrsold-hrsold)*60));
+    seconds=setzero(Math.floor((e_minsold-minsold)*60));
+    document.getElementById('days').innerHTML="已运行 "+daysold+" 天 "+hrsold+" 小时 "+minsold+" 分 "+seconds+" 秒";
+}
+function setzero(i) {
+    if (i<10) {
+        i="0" + i
+    };
+    return i;
+}
+show_date_time();
+</script>
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介："><span class="nav-number">1.</span> <span class="nav-text">简介：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#上传交互过程"><span class="nav-number">1.1.</span> <span class="nav-text">上传交互过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下载交互过程"><span class="nav-number">1.2.</span> <span class="nav-text">下载交互过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OK，说了这么多，我们开始我们的安装教程。。。"><span class="nav-number">2.</span> <span class="nav-text">OK，说了这么多，我们开始我们的安装教程。。。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-教程开始："><span class="nav-number">3.</span> <span class="nav-text">1.教程开始：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1单节点FastDFS"><span class="nav-number">3.1.</span> <span class="nav-text">1.1单节点FastDFS</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-1安装gcc"><span class="nav-number">3.1.1.</span> <span class="nav-text">1.1.1安装gcc</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-2-安装libevent"><span class="nav-number">3.1.2.</span> <span class="nav-text">1.1.2 安装libevent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-4-安装fastdfs"><span class="nav-number">3.1.3.</span> <span class="nav-text">1.1.4 安装fastdfs</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-5配置并启动tracker服务"><span class="nav-number">3.1.4.</span> <span class="nav-text">1.1.5配置并启动tracker服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-6配置并启动storage服务"><span class="nav-number">3.1.5.</span> <span class="nav-text">1.1.6配置并启动storage服务</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-使用nginx访问FastDFS"><span class="nav-number">4.</span> <span class="nav-text">2.使用nginx访问FastDFS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-为什么需要使用Nginx访问？"><span class="nav-number">4.1.</span> <span class="nav-text">2.1 为什么需要使用Nginx访问？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2安装fastdfs-nginx-module"><span class="nav-number">4.2.</span> <span class="nav-text">2.2安装fastdfs-nginx-module</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1解压"><span class="nav-number">4.2.1.</span> <span class="nav-text">2.2.1解压</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2修改config"><span class="nav-number">4.2.2.</span> <span class="nav-text">2.2.2修改config</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-3配置nginx与FastDFS关联配置文件"><span class="nav-number">4.2.3.</span> <span class="nav-text">2.2.3配置nginx与FastDFS关联配置文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3安装Nginx插件"><span class="nav-number">4.3.</span> <span class="nav-text">2.3安装Nginx插件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1如果没有安装过nginx"><span class="nav-number">4.3.1.</span> <span class="nav-text">2.3.1如果没有安装过nginx</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-如果安装过Nginx"><span class="nav-number">4.3.2.</span> <span class="nav-text">2.3.2 如果安装过Nginx</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-3启动Nginx"><span class="nav-number">4.3.3.</span> <span class="nav-text">2.2.3启动Nginx</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-4设置Nginx为开机启动"><span class="nav-number">4.3.4.</span> <span class="nav-text">2.3.4设置Nginx为开机启动</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FastDFS在Java中的使用教程："><span class="nav-number">5.</span> <span class="nav-text">FastDFS在Java中的使用教程：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-首先什么也不管，先来我们的Pom文件：（只引入了用到的依赖）"><span class="nav-number">5.1.</span> <span class="nav-text">1.首先什么也不管，先来我们的Pom文件：（只引入了用到的依赖）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-引入我们的配置文件，使用SpringBoot开发快捷，只需要在我们的Application-yml中配置就可以了"><span class="nav-number">5.2.</span> <span class="nav-text">2.引入我们的配置文件，使用SpringBoot开发快捷，只需要在我们的Application.yml中配置就可以了</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-好了，我们的基本工作完成了，接下来开始上菜。。。"><span class="nav-number">5.3.</span> <span class="nav-text">3.好了，我们的基本工作完成了，接下来开始上菜。。。</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-创建我们需要的基本类"><span class="nav-number">5.3.1.</span> <span class="nav-text">3.1 创建我们需要的基本类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-配置类："><span class="nav-number">5.3.2.</span> <span class="nav-text">3.2 配置类：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-我们的基本类就创建完了，很少吧，是的入门就是这么简单，下面开始我们的逻辑开始："><span class="nav-number">6.</span> <span class="nav-text">4.我们的基本类就创建完了，很少吧，是的入门就是这么简单，下面开始我们的逻辑开始：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-创建我们熟悉的Controller"><span class="nav-number">6.1.</span> <span class="nav-text">4.1 创建我们熟悉的Controller</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-创建我们的Service"><span class="nav-number">6.2.</span> <span class="nav-text">4.2 创建我们的Service</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3创建我们的Service实现类"><span class="nav-number">6.3.</span> <span class="nav-text">4.3创建我们的Service实现类</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 &mdash; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">CodeWorld</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      你是来访的第
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      位小伙伴
+    </span>
+  
+
+  
+    <span class="site-pv">
+      访问次数：
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'pcElkxj59x36vSvxVsiJiwW8-gzGzoHsz',
+        appKey: 'gpN19IqqR1PyPEXyladMiHeQ',
+        placeholder: '留下邮箱，有回复时你将收到提醒，邮箱不会被公开',
+        avatar:'wavatar',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("pcElkxj59x36vSvxVsiJiwW8-gzGzoHsz", "gpN19IqqR1PyPEXyladMiHeQ");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: ,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+
+</body>
+</html>

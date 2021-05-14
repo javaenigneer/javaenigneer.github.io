@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-flash.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/lfavicon-32x32-next.png?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="RabbitMQ," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Hello，我是一名在互联网捡破烂的程序员，最近破烂还挺好捡的，每天都是东逛逛西逛逛，收了很多的破烂呢。。。 收废铁了，十块一斤。快拿来卖哦，什么烂电冰箱，烂电视机，不管什么破烂我都要。。。 每天骑着我的烂三轮车，每天都是活的苟且偷生的，我好可怜。。。 呜呜呜呜  不管有钱木钱，都进来看一看瞧一瞧哦。。 好了~ 今天我们来接着讲，如果你是直接来阅读的这一期的话，那你要去看上一期的内容哦，这样我们才">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RabbitMQ实践二(消峰限流补充)">
+<meta property="og:url" content="https://javaenigneer.github.io/2020/04/19/RabbitMQ%E5%AE%9E%E8%B7%B5%E4%BA%8C-%E6%B6%88%E5%B3%B0%E9%99%90%E6%B5%81%E8%A1%A5%E5%85%85/index.html">
+<meta property="og:site_name" content="CodeWorld | 收废铁">
+<meta property="og:description" content="Hello，我是一名在互联网捡破烂的程序员，最近破烂还挺好捡的，每天都是东逛逛西逛逛，收了很多的破烂呢。。。 收废铁了，十块一斤。快拿来卖哦，什么烂电冰箱，烂电视机，不管什么破烂我都要。。。 每天骑着我的烂三轮车，每天都是活的苟且偷生的，我好可怜。。。 呜呜呜呜  不管有钱木钱，都进来看一看瞧一瞧哦。。 好了~ 今天我们来接着讲，如果你是直接来阅读的这一期的话，那你要去看上一期的内容哦，这样我们才">
+<meta property="og:image" content="data:image/jpeg;base64,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">
+<meta property="og:image" content="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200419172301.png">
+<meta property="og:image" content="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200419172444.png">
+<meta property="og:image" content="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200419172613.png">
+<meta property="og:image" content="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200419172706.png">
+<meta property="og:image" content="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200419173125.png">
+<meta property="og:image" content="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200419173425.png">
+<meta property="og:image" content="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200419173629.png">
+<meta property="og:image" content="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200419173744.png">
+<meta property="og:image" content="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200420201336.png">
+<meta property="og:image" content="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200420212452.png">
+<meta property="og:image" content="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200420212828.png">
+<meta property="og:image" content="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200420213113.png">
+<meta property="og:image" content="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200420213904.png">
+<meta property="og:image" content="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200420214110.png">
+<meta property="og:image" content="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200420214339.png">
+<meta property="og:image" content="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200420220451.png">
+<meta property="og:image" content="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200420214543.png">
+<meta property="og:image" content="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200420214729.png">
+<meta property="og:image" content="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/temp_qrcode_share_964285437.png">
+<meta property="article:published_time" content="2020-04-19T10:28:37.000Z">
+<meta property="article:modified_time" content="2020-04-20T14:17:18.000Z">
+<meta property="article:author" content="CodeWorld">
+<meta property="article:tag" content="RabbitMQ">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="data:image/jpeg;base64,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">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://javaenigneer.github.io/2020/04/19/RabbitMQ实践二-消峰限流补充/"/>
+
+
+
+
+
+  <title>RabbitMQ实践二(消峰限流补充) | CodeWorld | 收废铁</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CodeWorld | 收废铁</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">CodeWorld</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://javaenigneer.github.io/2020/04/19/RabbitMQ%E5%AE%9E%E8%B7%B5%E4%BA%8C-%E6%B6%88%E5%B3%B0%E9%99%90%E6%B5%81%E8%A1%A5%E5%85%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="CodeWorld">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CodeWorld | 收废铁">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">RabbitMQ实践二(消峰限流补充)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-19T18:28:37+08:00">
+                2020-04-19
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2020-04-20T22:17:18+08:00">
+                2020-04-20
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/RabbitMQ/" itemprop="url" rel="index">
+                    <span itemprop="name">RabbitMQ</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/04/19/RabbitMQ%E5%AE%9E%E8%B7%B5%E4%BA%8C-%E6%B6%88%E5%B3%B0%E9%99%90%E6%B5%81%E8%A1%A5%E5%85%85/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/04/19/RabbitMQ%E5%AE%9E%E8%B7%B5%E4%BA%8C-%E6%B6%88%E5%B3%B0%E9%99%90%E6%B5%81%E8%A1%A5%E5%85%85/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/04/19/RabbitMQ%E5%AE%9E%E8%B7%B5%E4%BA%8C-%E6%B6%88%E5%B3%B0%E9%99%90%E6%B5%81%E8%A1%A5%E5%85%85/" class="leancloud_visitors" data-flag-title="RabbitMQ实践二(消峰限流补充)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Hello，我是一名在互联网捡破烂的程序员，最近破烂还挺好捡的，每天都是东逛逛西逛逛，收了很多的破烂呢。。。</p>
+<p>收废铁了，十块一斤。快拿来卖哦，什么烂电冰箱，烂电视机，不管什么破烂我都要。。。</p>
+<p>每天骑着我的烂三轮车，每天都是活的苟且偷生的，我好可怜。。。</p>
+<p>呜呜呜呜</p>
+<p><img src="data:image/jpeg;base64,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" alt=""></p>
+<p>不管有钱木钱，都进来看一看瞧一瞧哦。。</p>
+<p>好了<del>~</del></p>
+<p>今天我们来接着讲，如果你是直接来阅读的这一期的话，那你要去看上一期的内容哦，这样我们才可以衔接起来的。</p>
+<p><a href="http://feicheng.xyz/2020/04/19/RabbitMQ%E5%AE%9E%E8%B7%B5%E4%BA%8C-%E6%B6%88%E5%B3%B0%E9%99%90%E6%B5%81/#more" target="_blank" rel="noopener">RabbitMQ实践二(消峰限流)</a></p>
+<h4 id="限流操作"><a href="#限流操作" class="headerlink" title="限流操作"></a>限流操作</h4><p>我们就直接从Controller层开始讲解了哈</p>
+<h5 id="1-修改我们的OrderController"><a href="#1-修改我们的OrderController" class="headerlink" title="1. 修改我们的OrderController"></a>1. 修改我们的OrderController</h5><blockquote>
+<p>OrderController</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.rabbitmq.controller;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.example.rabbitmq.common.ApiResponse;</span><br><span class="line"><span class="keyword">import</span> com.example.rabbitmq.entity.TestOrder;</span><br><span class="line"><span class="keyword">import</span> com.example.rabbitmq.service.OrderService;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.Logger;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</span><br><span class="line"><span class="keyword">import</span> org.springframework.amqp.core.AmqpTemplate;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.*;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 订单Controller</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"order"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span>(required = <span class="keyword">false</span>)</span><br><span class="line">    <span class="keyword">private</span> OrderService orderService;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Integer count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger LOGGER = LoggerFactory.getLogger(OrderController<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 使用RabbitMQ限流创建订单</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@PostMapping</span>(<span class="string">"create/&#123;goodsId&#125;"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ApiResponse <span class="title">create</span><span class="params">(@PathVariable(<span class="string">"goodsId"</span>)</span> Long goodsId)</span>&#123;</span><br><span class="line"></span><br><span class="line">        ApiResponse apiResponse = <span class="keyword">this</span>.orderService.create(goodsId);</span><br><span class="line"></span><br><span class="line">        LOGGER.info(<span class="string">"流量请求："</span> + count++);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> apiResponse;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 无RabbitMQ创建订单</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@PostMapping</span>(<span class="string">"/save/&#123;goodsId&#125;"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ApiResponse <span class="title">save</span><span class="params">(@PathVariable(<span class="string">"goodsId"</span>)</span> Long goodsId)</span>&#123;</span><br><span class="line"></span><br><span class="line">        ApiResponse apiResponse = <span class="keyword">this</span>.orderService.save(goodsId);</span><br><span class="line"></span><br><span class="line">        LOGGER.info(<span class="string">"流量请求："</span> + count++);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> apiResponse;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中我们只添加了一个使用限流操作的接口，和普通的接口一样一样的</p>
+<h5 id="2-修改我们的订单Service"><a href="#2-修改我们的订单Service" class="headerlink" title="2. 修改我们的订单Service"></a>2. 修改我们的订单Service</h5><blockquote>
+<p>OrderService</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.rabbitmq.service;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.example.rabbitmq.common.ApiResponse;</span><br><span class="line"><span class="keyword">import</span> com.example.rabbitmq.entity.TestOrder;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">OrderService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 使用RabbitMQ限流创建订单</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function">ApiResponse <span class="title">create</span><span class="params">(Long goodsId)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 无RabbitMQ消峰限流</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function">ApiResponse <span class="title">save</span><span class="params">(Long goodsId)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 创建订单</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> testOrder</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">createOrder</span><span class="params">(TestOrder testOrder)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中的<code>create</code>方法主要是将我们的请求全部接到消息队列中</p>
+<p>真正创建订单的方法是<code>createOrder</code></p>
+<h5 id="3-修改我们的订单ServiceImpl"><a href="#3-修改我们的订单ServiceImpl" class="headerlink" title="3. 修改我们的订单ServiceImpl"></a>3. 修改我们的订单ServiceImpl</h5><blockquote>
+<p>OrderServiceImpl</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.rabbitmq.service.impl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.example.rabbitmq.common.ApiResponse;</span><br><span class="line"><span class="keyword">import</span> com.example.rabbitmq.entity.TestGoods;</span><br><span class="line"><span class="keyword">import</span> com.example.rabbitmq.entity.TestOrder;</span><br><span class="line"><span class="keyword">import</span> com.example.rabbitmq.mapper.GoodsMapper;</span><br><span class="line"><span class="keyword">import</span> com.example.rabbitmq.mapper.OrderMapper;</span><br><span class="line"><span class="keyword">import</span> com.example.rabbitmq.service.OrderService;</span><br><span class="line"><span class="keyword">import</span> org.springframework.amqp.core.AmqpTemplate;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.Random;</span><br><span class="line"><span class="keyword">import</span> java.util.UUID;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * OrderService</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderServiceImpl</span> <span class="keyword">implements</span> <span class="title">OrderService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span>(required = <span class="keyword">false</span>)</span><br><span class="line">    <span class="keyword">private</span> AmqpTemplate amqpTemplate;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span>(required = <span class="keyword">false</span>)</span><br><span class="line">    <span class="keyword">private</span> OrderMapper orderMapper;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span>(required = <span class="keyword">false</span>)</span><br><span class="line">    <span class="keyword">private</span> GoodsMapper goodsMapper;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 使用RabbitMQ限流创建订单</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ApiResponse <span class="title">create</span><span class="params">(Long goodsId)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 判断参数</span></span><br><span class="line">            <span class="keyword">if</span> (goodsId == <span class="keyword">null</span>)&#123;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> ApiResponse().code(<span class="number">444</span>).msg(<span class="string">"参数错误"</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 发送消息</span></span><br><span class="line">            <span class="keyword">this</span>.amqpTemplate.convertAndSend(<span class="string">"order.create"</span>,goodsId);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ApiResponse().code(<span class="number">200</span>).msg(<span class="string">"下单中，请稍后"</span>);</span><br><span class="line"></span><br><span class="line">        &#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ApiResponse().code(<span class="number">500</span>).msg(<span class="string">"服务器错误"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 使用RabbitMQ限流创建订单</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> testOrder</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">createOrder</span><span class="params">(TestOrder testOrder)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.orderMapper.create(testOrder);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 无RabbitMQ消峰限流</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ApiResponse <span class="title">save</span><span class="params">(Long goodsId)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (goodsId == <span class="keyword">null</span>)&#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ApiResponse().code(<span class="number">400</span>).msg(<span class="string">"参数错误"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 根据商品Id查询商品</span></span><br><span class="line">        TestGoods testGoods = <span class="keyword">this</span>.goodsMapper.selectStockById(goodsId);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 商品不存在或者商品库存为0</span></span><br><span class="line">        <span class="keyword">if</span> (testGoods == <span class="keyword">null</span> || testGoods.getGoodsStock() &lt;= <span class="number">0</span>)&#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ApiResponse().code(<span class="number">400</span>).msg(<span class="string">"商品不存在或者库存为0"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 直接添加</span></span><br><span class="line">        <span class="comment">// 创建订单</span></span><br><span class="line">        TestOrder testOrder = <span class="keyword">new</span> TestOrder();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 设置参数</span></span><br><span class="line">        testOrder.setOrderUserEmail(<span class="string">"111@qq.com"</span>);</span><br><span class="line"></span><br><span class="line">        testOrder.setOrderUserName(<span class="string">"FC"</span>);</span><br><span class="line"></span><br><span class="line">        testOrder.setOrderDate(<span class="keyword">new</span> Date());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.orderMapper.save(testOrder);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 更新库存</span></span><br><span class="line">        <span class="keyword">this</span>.goodsMapper.updateGoodsStock(goodsId);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ApiResponse().code(<span class="number">200</span>).msg(<span class="string">"订单创建成功"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这里我们可以清楚的看到了，我们是怎么将请求全部接入到我们的消息队列中的</p>
+<p>我们这样做的思想就是，我们需要有一个中间商来帮助我们接收消息，那么这个中间商要比我们的持久层要厉害些，可以接收很多的请求，我们再慢慢的消费这些消息</p>
+<h5 id="4-消费者"><a href="#4-消费者" class="headerlink" title="4. 消费者"></a>4. 消费者</h5><blockquote>
+<p>OrderListener</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.rabbitmq.listener;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.example.rabbitmq.entity.TestGoods;</span><br><span class="line"><span class="keyword">import</span> com.example.rabbitmq.entity.TestOrder;</span><br><span class="line"><span class="keyword">import</span> com.example.rabbitmq.service.GoodsService;</span><br><span class="line"><span class="keyword">import</span> com.example.rabbitmq.service.OrderService;</span><br><span class="line"><span class="keyword">import</span> com.rabbitmq.client.Channel;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.Logger;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</span><br><span class="line"><span class="keyword">import</span> org.springframework.amqp.core.AmqpTemplate;</span><br><span class="line"><span class="keyword">import</span> org.springframework.amqp.core.ExchangeTypes;</span><br><span class="line"><span class="keyword">import</span> org.springframework.amqp.core.Message;</span><br><span class="line"><span class="keyword">import</span> org.springframework.amqp.rabbit.annotation.*;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 订单请求消息生产者</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderListener</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger LOGGER = LoggerFactory.getLogger(OrderListener<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span>(required = <span class="keyword">false</span>)</span><br><span class="line">    <span class="keyword">private</span> OrderService orderService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> AmqpTemplate amqpTemplate;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span>(required = <span class="keyword">false</span>)</span><br><span class="line">    <span class="keyword">private</span> GoodsService goodsService;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 创建订单消息监听</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> goodsId</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@RabbitListener</span>(bindings = <span class="meta">@QueueBinding</span>(</span><br><span class="line">            value = <span class="meta">@Queue</span>(value = <span class="string">"ORDER.QUEUE"</span>, durable = <span class="string">"true"</span>),</span><br><span class="line"></span><br><span class="line">            arguments = &#123;<span class="meta">@Argument</span>(name = <span class="string">"x-max-length"</span>, value = <span class="string">"10"</span>),</span><br><span class="line">                         <span class="meta">@Argument</span>(name = <span class="string">"dead-letter-exchange"</span>,value = <span class="string">"reject-publish"</span>)</span><br><span class="line">            &#125;,</span><br><span class="line"></span><br><span class="line">            exchange = <span class="meta">@Exchange</span>(value = <span class="string">"ORDER.EXCHANGE"</span>, ignoreDeclarationExceptions = <span class="string">"true"</span>, type = ExchangeTypes.TOPIC),</span><br><span class="line"></span><br><span class="line">            key = &#123;<span class="string">"order.create"</span>&#125;</span><br><span class="line">    ))</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">create</span><span class="params">(Long goodsId, Channel channel, Message message)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (goodsId == <span class="keyword">null</span>) &#123;</span><br><span class="line"></span><br><span class="line">              <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 先根据商品Id查询商品库存</span></span><br><span class="line">           TestGoods goods = <span class="keyword">this</span>.goodsService.selectGoodsById(goodsId);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (goods == <span class="keyword">null</span> || goods.getGoodsStock() &lt;= <span class="number">0</span>)&#123;</span><br><span class="line"></span><br><span class="line">               <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 创建订单</span></span><br><span class="line">            TestOrder testOrder = <span class="keyword">new</span> TestOrder();</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 设置参数</span></span><br><span class="line">            testOrder.setOrderUserName(<span class="string">"FC"</span>);</span><br><span class="line"></span><br><span class="line">            testOrder.setOrderUserEmail(<span class="string">"111@qq.com"</span>);</span><br><span class="line"></span><br><span class="line">            testOrder.setOrderDate(<span class="keyword">new</span> Date());</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 执行添加</span></span><br><span class="line">            <span class="keyword">this</span>.orderService.createOrder(testOrder);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 更新库存</span></span><br><span class="line">            <span class="keyword">this</span>.goodsService.updateGoodsStock(goodsId);</span><br><span class="line"></span><br><span class="line">            LOGGER.info(<span class="string">"消费成功"</span>);</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line"></span><br><span class="line">            LOGGER.error(<span class="string">"消费失败"</span>);</span><br><span class="line"></span><br><span class="line">        &#125;<span class="keyword">finally</span> &#123;</span><br><span class="line"></span><br><span class="line">            channel.basicAck(message.getMessageProperties().getDeliveryTag(), <span class="keyword">false</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个就不用我多说了吧。这里面的细枝末节，需要自行查阅。</p>
+<p>也可以去参考 <a href="http://feicheng.xyz/2020/04/14/RabbitMQ%E5%AE%9E%E8%B7%B5%E5%BA%94%E7%94%A8%E4%B8%80/#more" target="_blank" rel="noopener">RabbitMQ实践应用一</a></p>
+<p>这样就可以简单的实现我们的消峰限流啦。。。。</p>
+<p>我们开始我们的测试吧</p>
+<p>我们首先还是用postman来测试我们的接口是否可用</p>
+<p><img src="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200419172301.png" alt=""></p>
+<p>我们可以在控制台看见</p>
+<p><img src="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200419172444.png" alt=""></p>
+<p>这样我们就简单的消费成功了，库存和订单也都更新和添加成功啦</p>
+<p><img src="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200419172613.png" alt=""></p>
+<p><img src="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200419172706.png" alt=""></p>
+<p>当然这样我们也是不可能的，那我们还是要去用压力测试来试试能不能顶住呢</p>
+<p>还是用我们的<code>jmeter</code>来做压力测试，只需要修改接口就行</p>
+<p><img src="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200419173125.png" alt=""></p>
+<p>这样看我们的就是有条理的执行啦</p>
+<p>但是这样我们的请求就没有全部打在数据库上，这样我们就可以实现限流啦。。。</p>
+<p>我们再来看我们的数据库呢？有木有像没有限流的出现超卖的情况呀</p>
+<p><img src="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200419173425.png" alt=""></p>
+<p>哟哟哟，尽然没有出现超卖的情况，那这就算是实现了限流操作</p>
+<p>我们再来看订单是不是100个呢</p>
+<p><img src="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200419173629.png" alt=""></p>
+<p>我们是从115开始的，看看是不是214结束呢</p>
+<p><img src="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200419173744.png" alt=""></p>
+<p>哇哦，果然是预想的一样。。。。。</p>
+<p>我们再看时间，是在同一时间下的订单。。。</p>
+<p>那就证明了我们的限流操作</p>
+<p>OK，这里我们的消峰限流就全部完成了，可能不是那么完善，也有很多的漏洞。</p>
+<p>就算库存为0，流量还是会分批打到我们的数据上面，有木有办法，直接舍弃这些流量呢？</p>
+<p>这就需要自己思考了，要化为自己的东西才算是真正理解。。。。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>从某种意义上说，消费者的限流策略有助于那么处理消息效率高的消费者多消费一些消息，效率低一些的消费者少推送一些消息，从而可以达到能者多劳的目的，尽可能发挥消费者处理消息的能力。在项目中，为了缓解生产者和消费者两边效率不平衡的影响，通常会对消费者进行限流处理，保证消费者端正常消费消息，尽可能避免服务器崩溃以及宕机现象。</p>
+<h4 id="加入Redis缓存实现限流操作"><a href="#加入Redis缓存实现限流操作" class="headerlink" title="加入Redis缓存实现限流操作"></a>加入Redis缓存实现限流操作</h4><h4 id="一、为什么要加入Redis缓存"><a href="#一、为什么要加入Redis缓存" class="headerlink" title="一、为什么要加入Redis缓存"></a>一、为什么要加入Redis缓存</h4><p>我们在前面实现了简单的限流操作，对用户下订单有了很好的维护及在并发情况下可以撑住。</p>
+<p>但是，我们在前面留了一个问题，当我们库存为0时，但是我们的流量还存在很多，虽然是分批打入我们的数据库，这样对我们来说是很不友好的。数据库中根本没有库存了，就不应该将剩余的流量打入到我们的数据层。</p>
+<p>那么我我们应该怎么解决呢？</p>
+<p>这里我们就加入了 <strong>Redis</strong>缓存技术，相信你在使用这个技术之前就很了解这个Redis了吧。。。。</p>
+<h4 id="二、流程图"><a href="#二、流程图" class="headerlink" title="二、流程图"></a>二、流程图</h4><p><img src="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200420201336.png" alt=""></p>
+<p>流程图不标准，根据自己的理解画的。。。</p>
+<p>将就一下吧。。。。</p>
+<h4 id="三、代码实现"><a href="#三、代码实现" class="headerlink" title="三、代码实现"></a>三、代码实现</h4><p>我们只需要修改部分的代码</p>
+<h5 id="3-1-引入新的依赖"><a href="#3-1-引入新的依赖" class="headerlink" title="3.1 引入新的依赖"></a>3.1 引入新的依赖</h5><p>相信你猜就知道了吧</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">&lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">&lt;groupId&gt;org.apache.commons&lt;/groupId&gt;</span><br><span class="line">&lt;artifactId&gt;commons-lang3&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-2-修改我们的application-yml"><a href="#3-2-修改我们的application-yml" class="headerlink" title="3.2 修改我们的application.yml"></a>3.2 修改我们的<code>application.yml</code></h5><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#redis配置</span></span><br><span class="line"><span class="attr">redis:</span></span><br><span class="line">  <span class="attr">host:</span> <span class="number">192.168</span><span class="number">.2</span><span class="number">.4</span> <span class="comment">#主机地址</span></span><br><span class="line">  <span class="attr">database:</span> <span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<p>使用前需要安装<code>Redis</code>，我们可以在<code>Linux</code>上安装也可以在<code>windows</code>上安装</p>
+<p>推荐在<code>Linux</code>上安装，我们的大部分都是部署在<code>Linux</code>上的</p>
+<p><a href="http://feicheng.xyz/2020/03/30/Redis%E7%9A%84%E4%BD%BF%E7%94%A8%E6%93%8D%E4%BD%9C/" target="_blank" rel="noopener">Redis的使用操作</a></p>
+<h5 id="3-3-修改我们的OrderListener"><a href="#3-3-修改我们的OrderListener" class="headerlink" title="3.3 修改我们的OrderListener"></a>3.3 修改我们的<code>OrderListener</code></h5><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.rabbitmq.listener;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.example.rabbitmq.entity.TestGoods;</span><br><span class="line"><span class="keyword">import</span> com.example.rabbitmq.entity.TestOrder;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.example.rabbitmq.service.GoodsService;</span><br><span class="line"><span class="keyword">import</span> com.example.rabbitmq.service.OrderService;</span><br><span class="line"><span class="keyword">import</span> com.example.rabbitmq.utils.JsonUtils;</span><br><span class="line"><span class="keyword">import</span> com.rabbitmq.client.Channel;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.commons.lang3.StringUtils;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.Logger;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</span><br><span class="line"><span class="keyword">import</span> org.springframework.amqp.core.ExchangeTypes;</span><br><span class="line"><span class="keyword">import</span> org.springframework.amqp.core.Message;</span><br><span class="line"><span class="keyword">import</span> org.springframework.amqp.rabbit.annotation.*;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.core.StringRedisTemplate;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.ReentrantLock;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 订单请求消息生产者</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderListener</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger LOGGER = LoggerFactory.getLogger(OrderListener<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span>(required = <span class="keyword">false</span>)</span><br><span class="line">    <span class="keyword">private</span> OrderService orderService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span>(required = <span class="keyword">false</span>)</span><br><span class="line">    <span class="keyword">private</span> GoodsService goodsService;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> String GOODS_NAME = <span class="string">"goods:id:"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span>(required = <span class="keyword">false</span>)</span><br><span class="line">    <span class="keyword">private</span> StringRedisTemplate stringRedisTemplate;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> ReentrantLock lock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 创建订单消息监听</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> goodsId</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@RabbitListener</span>(bindings = <span class="meta">@QueueBinding</span>(</span><br><span class="line">            value = <span class="meta">@Queue</span>(value = <span class="string">"ORDER.QUEUE"</span>, durable = <span class="string">"true"</span>),</span><br><span class="line"></span><br><span class="line">            arguments = &#123;<span class="meta">@Argument</span>(name = <span class="string">"x-max-length"</span>, value = <span class="string">"10"</span>),</span><br><span class="line">                    <span class="meta">@Argument</span>(name = <span class="string">"dead-letter-exchange"</span>, value = <span class="string">"reject-publish"</span>)</span><br><span class="line">            &#125;,</span><br><span class="line"></span><br><span class="line">            exchange = <span class="meta">@Exchange</span>(value = <span class="string">"ORDER.EXCHANGE"</span>, ignoreDeclarationExceptions = <span class="string">"true"</span>, type = ExchangeTypes.TOPIC),</span><br><span class="line"></span><br><span class="line">            key = &#123;<span class="string">"order.create"</span>&#125;</span><br><span class="line">    ))</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">create</span><span class="params">(Long goodsId, Channel channel, Message message)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (goodsId == <span class="keyword">null</span>) &#123;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            String json = <span class="keyword">this</span>.getRedisData(goodsId);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Redis缓存中没有命中</span></span><br><span class="line">            <span class="keyword">if</span> (StringUtils.isBlank(json))&#123;</span><br><span class="line"></span><br><span class="line">                <span class="comment">/**</span></span><br><span class="line"><span class="comment">                 * 上锁</span></span><br><span class="line"><span class="comment">                 */</span></span><br><span class="line">                <span class="keyword">if</span> (lock.tryLock())&#123;</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// 从数据库库中拿到数据</span></span><br><span class="line">                    TestGoods testGoods = <span class="keyword">this</span>.getDBData(goodsId);</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> (testGoods == <span class="keyword">null</span> || testGoods.getGoodsStock() &lt;= <span class="number">0</span>)&#123;</span><br><span class="line"></span><br><span class="line">                        <span class="keyword">return</span>;</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// 创建订单</span></span><br><span class="line">                    TestOrder testOrder = <span class="keyword">new</span> TestOrder();</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// 设置参数</span></span><br><span class="line">                    testOrder.setOrderUserName(<span class="string">"FC"</span>);</span><br><span class="line"></span><br><span class="line">                    testOrder.setOrderUserEmail(<span class="string">"111@qq.com"</span>);</span><br><span class="line"></span><br><span class="line">                    testOrder.setOrderDate(<span class="keyword">new</span> Date());</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// 执行添加</span></span><br><span class="line">                    <span class="keyword">this</span>.orderService.createOrder(testOrder);</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// 更新库存</span></span><br><span class="line">                    testGoods.setGoodsStock(testGoods.getGoodsStock() - <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">                    json = JsonUtils.serialize(testGoods);</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">this</span>.setRedisDate(goodsId, json);</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// 释放锁</span></span><br><span class="line">                    lock.unlock();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line"></span><br><span class="line">                Thread.sleep(<span class="number">100L</span>);</span><br><span class="line"></span><br><span class="line">                json = <span class="keyword">this</span>.getRedisData(goodsId);</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 将Json转化为对象</span></span><br><span class="line">                TestGoods testGoods = JsonUtils.parse(json, TestGoods<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (testGoods == <span class="keyword">null</span> || testGoods.getGoodsStock() &lt;= <span class="number">0</span>)&#123;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">return</span>;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 创建订单</span></span><br><span class="line">                TestOrder testOrder = <span class="keyword">new</span> TestOrder();</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 设置参数</span></span><br><span class="line">                testOrder.setOrderUserName(<span class="string">"FC"</span>);</span><br><span class="line"></span><br><span class="line">                testOrder.setOrderUserEmail(<span class="string">"111@qq.com"</span>);</span><br><span class="line"></span><br><span class="line">                testOrder.setOrderDate(<span class="keyword">new</span> Date());</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 执行添加</span></span><br><span class="line">                <span class="keyword">this</span>.orderService.createOrder(testOrder);</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 更新库存</span></span><br><span class="line">                testGoods.setGoodsStock(testGoods.getGoodsStock() - <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">                json = JsonUtils.serialize(testGoods);</span><br><span class="line"></span><br><span class="line">                <span class="keyword">this</span>.setRedisDate(goodsId, json);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line"></span><br><span class="line">            LOGGER.error(<span class="string">"消费失败"</span>);</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line"></span><br><span class="line">            channel.basicAck(message.getMessageProperties().getDeliveryTag(), <span class="keyword">false</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 从Redis中获取数据</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> goodsId</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">getRedisData</span><span class="params">(Long goodsId)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 从缓存中获取数据</span></span><br><span class="line">        String json = <span class="keyword">this</span>.stringRedisTemplate.opsForValue().get(GOODS_NAME + goodsId);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> json;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 设置Redis缓存数据</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> goodsId</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> json</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setRedisDate</span><span class="params">(Long goodsId, String json)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.stringRedisTemplate.opsForValue().set(GOODS_NAME + goodsId, json);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 从数据库中取出数据</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> goodsId</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> TestGoods <span class="title">getDBData</span><span class="params">(Long goodsId)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        TestGoods testGoods = <span class="keyword">this</span>.goodsService.selectGoodsById(goodsId);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> testGoods;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>主要代码解释</p>
+<p>其中写的三个方法就不用说了吧</p>
+<p><code>getRedisData</code>：从Redis中获取数据</p>
+<p><code>setRedisData</code>：更新Redis中的数据</p>
+<p><code>getDBData</code>：从数据库中获取数据</p>
+<ul>
+<li>首先请求过来会带着一个Id，先判断这个Id是否为空</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (goodsId == <span class="keyword">null</span>) &#123;</span><br><span class="line">       <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>若为空，消息直接丢弃</p>
+<ul>
+<li>先从 <strong>Redis</strong>中获取数据</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">String json = <span class="keyword">this</span>.getRedisData(goodsId);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>判断获取的数据是否为空，也就是缓存中是否有数据，若没有数据，则上锁，从数据库中取出数据</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 上锁</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">  <span class="keyword">if</span> (lock.tryLock())&#123;</span><br><span class="line"> <span class="comment">// 从数据库库中拿到数据</span></span><br><span class="line"> TestGoods testGoods = <span class="keyword">this</span>.getDBData(goodsId);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>从数据库中拿到数据后，将其放入缓存中，并释放锁</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">json = JsonUtils.serialize(testGoods);</span><br><span class="line"></span><br><span class="line"><span class="keyword">this</span>.setRedisDate(goodsId, json);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 释放锁</span></span><br><span class="line">lock.unlock();</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>若从缓存中命中数据，那么让其休眠</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Thread.sleep(<span class="number">100L</span>);</span><br><span class="line"></span><br><span class="line">json = <span class="keyword">this</span>.getRedisData(goodsId);</span><br></pre></td></tr></table></figure>
+
+<p>OK，就这样简单的修改好我们的代码了，是不是很简单呢。</p>
+<h4 id="四、截图验证"><a href="#四、截图验证" class="headerlink" title="四、截图验证"></a>四、截图验证</h4><p>首先来看看我们的数据库中商品的库存信息</p>
+<p><img src="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200420212452.png" alt=""></p>
+<p>再来看看我们的订单表</p>
+<p><img src="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200420212828.png" alt=""></p>
+<p>接下来，就直接上我们的压力测试，这次要使用6000个请求啦，看你还抵不抵得住</p>
+<p><img src="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200420213113.png" alt=""></p>
+<p>首先看我们的控制台</p>
+<p>我们的消息队列直接将全部的瞬时流量收入囊中</p>
+<p><img src="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200420213904.png" alt=""></p>
+<p>然后我们在分批处理我们的流量，也就是下订单啦</p>
+<p><img src="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200420214110.png" alt=""></p>
+<p>OK，我们来看看我们的Redis缓存是否正确呢？预判库存为0</p>
+<p><img src="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200420214339.png" alt=""></p>
+<p>哇哦，那还可以，基本实现了</p>
+<p>下面才是我们的重头戏</p>
+<p>看看我们的数据库是否有错呢？</p>
+<p>先来看库存，预判为100</p>
+<p>为什么呢？我们在下单中，基本上就没有和数据库打交道，把它给撇开了</p>
+<p>我们直接是在缓存中进行的，根本没有更新数据库的商品库存，那肯定是100啦</p>
+<p><img src="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200420220451.png" alt=""></p>
+<p>哇哦，果真是诶。。。。</p>
+<p>那再来看我们订单表呢，你有木有超出100条呢</p>
+<p><img src="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200420214543.png" alt=""></p>
+<p>一张图截不完，我们是从715开始的，看看是否是814结束呢</p>
+<p><img src="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/04/20200420214729.png" alt=""></p>
+<p>哇哦，也是诶，那这就对了嘛。。。</p>
+<p>我们仔细一看，这一次我们下单的时间就有差别了，没有同一时间将下单。。。</p>
+<h4 id="五、总结"><a href="#五、总结" class="headerlink" title="五、总结"></a>五、总结</h4><p>我们使用Redis缓存，大大减轻了我们数据库的压力，查询商品只需要访问一次数据库，查询的数据放入缓存。</p>
+<p>订单的下单时间也有所优化。</p>
+<p>你们有木有什么优化的呢？可以思考哦，其实还有很多方案</p>
+<p>OK，在这里我们的实践操作二(消峰限流)就到这里了，不知道你有没有帮助到你呢？</p>
+<p>看到这里的人都是技术人才，你的浏览就是我前进的动力</p>
+<p>欢迎加入QQ群：</p>
+<p><img src="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/temp_qrcode_share_964285437.png" alt=""></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    CodeWorld
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://javaenigneer.github.io/2020/04/19/RabbitMQ%E5%AE%9E%E8%B7%B5%E4%BA%8C-%E6%B6%88%E5%B3%B0%E9%99%90%E6%B5%81%E8%A1%A5%E5%85%85/" title="RabbitMQ实践二(消峰限流补充)">https://javaenigneer.github.io/2020/04/19/RabbitMQ%E5%AE%9E%E8%B7%B5%E4%BA%8C-%E6%B6%88%E5%B3%B0%E9%99%90%E6%B5%81%E8%A1%A5%E5%85%85/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/RabbitMQ/" rel="tag"># RabbitMQ</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/04/19/RabbitMQ%E5%AE%9E%E8%B7%B5%E4%BA%8C-%E6%B6%88%E5%B3%B0%E9%99%90%E6%B5%81/" rel="next" title="RabbitMQ实践二(消峰限流)">
+                <i class="fa fa-chevron-left"></i> RabbitMQ实践二(消峰限流)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/01/14/XXL-JOB%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E9%BB%98%E8%AE%A4%E4%BD%BF%E7%94%A8/" rel="prev" title="XXL-JOB定时任务默认使用">
+                XXL-JOB定时任务默认使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.gif"
+                alt="CodeWorld" />
+            
+              <p class="site-author-name" itemprop="name">CodeWorld</p>
+              <p class="site-description motion-element" itemprop="description">越努力，越幸运</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/javaenigneer" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="1692454247@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://github.com/" title="Github" target="_blank">Github</a>
+                  </li>
+                
+              </ul>
+              <div id="days"></div>
+<script>
+function show_date_time(){
+    window.setTimeout("show_date_time()", 1000);
+    BirthDay=new Date("04/10/2019 12:13:14");
+    today=new Date();
+    timeold=(today.getTime()-BirthDay.getTime());
+    sectimeold=timeold/1000
+    secondsold=Math.floor(sectimeold);
+    msPerDay=24*60*60*1000
+    e_daysold=timeold/msPerDay
+    daysold=Math.floor(e_daysold);
+    e_hrsold=(e_daysold-daysold)*24;
+    hrsold=setzero(Math.floor(e_hrsold));
+    e_minsold=(e_hrsold-hrsold)*60;
+    minsold=setzero(Math.floor((e_hrsold-hrsold)*60));
+    seconds=setzero(Math.floor((e_minsold-minsold)*60));
+    document.getElementById('days').innerHTML="已运行 "+daysold+" 天 "+hrsold+" 小时 "+minsold+" 分 "+seconds+" 秒";
+}
+function setzero(i) {
+    if (i<10) {
+        i="0" + i
+    };
+    return i;
+}
+show_date_time();
+</script>
+
+            </div>
+          
+
+          <div id="days"></div>
+<script>
+function show_date_time(){
+    window.setTimeout("show_date_time()", 1000);
+    BirthDay=new Date("04/10/2019 12:13:14");
+    today=new Date();
+    timeold=(today.getTime()-BirthDay.getTime());
+    sectimeold=timeold/1000
+    secondsold=Math.floor(sectimeold);
+    msPerDay=24*60*60*1000
+    e_daysold=timeold/msPerDay
+    daysold=Math.floor(e_daysold);
+    e_hrsold=(e_daysold-daysold)*24;
+    hrsold=setzero(Math.floor(e_hrsold));
+    e_minsold=(e_hrsold-hrsold)*60;
+    minsold=setzero(Math.floor((e_hrsold-hrsold)*60));
+    seconds=setzero(Math.floor((e_minsold-minsold)*60));
+    document.getElementById('days').innerHTML="已运行 "+daysold+" 天 "+hrsold+" 小时 "+minsold+" 分 "+seconds+" 秒";
+}
+function setzero(i) {
+    if (i<10) {
+        i="0" + i
+    };
+    return i;
+}
+show_date_time();
+</script>
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#限流操作"><span class="nav-number">1.</span> <span class="nav-text">限流操作</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-修改我们的OrderController"><span class="nav-number">1.1.</span> <span class="nav-text">1. 修改我们的OrderController</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-修改我们的订单Service"><span class="nav-number">1.2.</span> <span class="nav-text">2. 修改我们的订单Service</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-修改我们的订单ServiceImpl"><span class="nav-number">1.3.</span> <span class="nav-text">3. 修改我们的订单ServiceImpl</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-消费者"><span class="nav-number">1.4.</span> <span class="nav-text">4. 消费者</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#加入Redis缓存实现限流操作"><span class="nav-number">3.</span> <span class="nav-text">加入Redis缓存实现限流操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一、为什么要加入Redis缓存"><span class="nav-number">4.</span> <span class="nav-text">一、为什么要加入Redis缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、流程图"><span class="nav-number">5.</span> <span class="nav-text">二、流程图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、代码实现"><span class="nav-number">6.</span> <span class="nav-text">三、代码实现</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-引入新的依赖"><span class="nav-number">6.1.</span> <span class="nav-text">3.1 引入新的依赖</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2-修改我们的application-yml"><span class="nav-number">6.2.</span> <span class="nav-text">3.2 修改我们的application.yml</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-3-修改我们的OrderListener"><span class="nav-number">6.3.</span> <span class="nav-text">3.3 修改我们的OrderListener</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四、截图验证"><span class="nav-number">7.</span> <span class="nav-text">四、截图验证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#五、总结"><span class="nav-number">8.</span> <span class="nav-text">五、总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 &mdash; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">CodeWorld</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      你是来访的第
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      位小伙伴
+    </span>
+  
+
+  
+    <span class="site-pv">
+      访问次数：
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'pcElkxj59x36vSvxVsiJiwW8-gzGzoHsz',
+        appKey: 'gpN19IqqR1PyPEXyladMiHeQ',
+        placeholder: '留下邮箱，有回复时你将收到提醒，邮箱不会被公开',
+        avatar:'wavatar',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("pcElkxj59x36vSvxVsiJiwW8-gzGzoHsz", "gpN19IqqR1PyPEXyladMiHeQ");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: ,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+
+</body>
+</html>

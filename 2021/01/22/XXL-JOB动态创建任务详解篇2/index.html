@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-flash.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/lfavicon-32x32-next.png?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="CodeWorld-Cloud-Shop XXL-JOB动态创建任务详解篇2—奶妈级教学前言我们在上一节CodeWorld-Cloud-Shop XXL-JOB动态创建任务详解篇1—奶妈级教学讲解了XXL-JOB我们在创建任务的缺陷那么这一节我们呢将继续实现怎么来动态创建任务 修改xxl-job-admin的接口我们知道了，我们在调用接口前呢，就需要登录才能调用，不过后来我们发现可以加上一个 Pe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XXL-JOB动态创建任务详解篇2">
+<meta property="og:url" content="https://javaenigneer.github.io/2021/01/22/XXL-JOB%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BA%E4%BB%BB%E5%8A%A1%E8%AF%A6%E8%A7%A3%E7%AF%872/index.html">
+<meta property="og:site_name" content="CodeWorld | 收废铁">
+<meta property="og:description" content="CodeWorld-Cloud-Shop XXL-JOB动态创建任务详解篇2—奶妈级教学前言我们在上一节CodeWorld-Cloud-Shop XXL-JOB动态创建任务详解篇1—奶妈级教学讲解了XXL-JOB我们在创建任务的缺陷那么这一节我们呢将继续实现怎么来动态创建任务 修改xxl-job-admin的接口我们知道了，我们在调用接口前呢，就需要登录才能调用，不过后来我们发现可以加上一个 Pe">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/23aff44a872c48c9b03337f5f528d4f7~tplv-k3u1fbpfcp-zoom-1.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/637e4450945f4fc1831383bc60b94fa8~tplv-k3u1fbpfcp-zoom-1.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1ef34b3f69a34123bc14521f74b668a6~tplv-k3u1fbpfcp-zoom-1.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3095cdd580b94311aa6c2498221cb16b~tplv-k3u1fbpfcp-zoom-1.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7191bf058ea446a2a7b74ada54b7b55a~tplv-k3u1fbpfcp-zoom-1.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c355dc3bd56b4915b12ae20100799d3b~tplv-k3u1fbpfcp-zoom-1.image">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/28ed574f8c834d3cb88e4ef804f6e9dd~tplv-k3u1fbpfcp-zoom-1.image">
+<meta property="article:published_time" content="2021-01-22T08:52:49.000Z">
+<meta property="article:modified_time" content="2021-01-22T08:58:26.822Z">
+<meta property="article:author" content="CodeWorld">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/23aff44a872c48c9b03337f5f528d4f7~tplv-k3u1fbpfcp-zoom-1.image">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://javaenigneer.github.io/2021/01/22/XXL-JOB动态创建任务详解篇2/"/>
+
+
+
+
+
+  <title>XXL-JOB动态创建任务详解篇2 | CodeWorld | 收废铁</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CodeWorld | 收废铁</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">CodeWorld</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://javaenigneer.github.io/2021/01/22/XXL-JOB%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BA%E4%BB%BB%E5%8A%A1%E8%AF%A6%E8%A7%A3%E7%AF%872/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="CodeWorld">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CodeWorld | 收废铁">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">XXL-JOB动态创建任务详解篇2</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-01-22T16:52:49+08:00">
+                2021-01-22
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2021-01-22T16:58:26+08:00">
+                2021-01-22
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/XXL-JOB/" itemprop="url" rel="index">
+                    <span itemprop="name">XXL-JOB</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/01/22/XXL-JOB%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BA%E4%BB%BB%E5%8A%A1%E8%AF%A6%E8%A7%A3%E7%AF%872/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2021/01/22/XXL-JOB%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BA%E4%BB%BB%E5%8A%A1%E8%AF%A6%E8%A7%A3%E7%AF%872/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2021/01/22/XXL-JOB%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BA%E4%BB%BB%E5%8A%A1%E8%AF%A6%E8%A7%A3%E7%AF%872/" class="leancloud_visitors" data-flag-title="XXL-JOB动态创建任务详解篇2">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="CodeWorld-Cloud-Shop-XXL-JOB动态创建任务详解篇2—奶妈级教学"><a href="#CodeWorld-Cloud-Shop-XXL-JOB动态创建任务详解篇2—奶妈级教学" class="headerlink" title="CodeWorld-Cloud-Shop XXL-JOB动态创建任务详解篇2—奶妈级教学"></a>CodeWorld-Cloud-Shop XXL-JOB动态创建任务详解篇2—奶妈级教学</h2><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>我们在上一节<a href="https://feicheng.xyz/2021/01/22/XXL-JOB%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BA%E4%BB%BB%E5%8A%A1%E8%AF%A6%E8%A7%A3%E7%AF%871/" target="_blank" rel="noopener">CodeWorld-Cloud-Shop XXL-JOB动态创建任务详解篇1—奶妈级教学</a>讲解了XXL-JOB我们在创建任务的缺陷<br>那么这一节我们呢将继续实现怎么来动态创建任务</p>
+<h3 id="修改xxl-job-admin的接口"><a href="#修改xxl-job-admin的接口" class="headerlink" title="修改xxl-job-admin的接口"></a>修改xxl-job-admin的接口</h3><p>我们知道了，我们在调用接口前呢，就需要登录才能调用，不过后来我们发现可以加上一个 <code>PermissionLimit</code>并设置limit为false<br>那么这样就不用去登录就可以调用接口</p>
+<p>将 <code>JobInfoController</code>添加如下接口</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 自定义方法</span></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 添加任务</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> jobInfo</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@RequestMapping</span>(<span class="string">"/addJob"</span>)</span><br><span class="line">	<span class="meta">@ResponseBody</span></span><br><span class="line">	<span class="meta">@PermissionLimit</span>(limit = <span class="keyword">false</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> ReturnT&lt;String&gt; <span class="title">addJob</span><span class="params">(@RequestBody XxlJobInfo jobInfo)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> xxlJobService.add(jobInfo);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">我们在上面可以看见大致和原来的添加接口一致，这里我们加上了</span><br><span class="line">@PermissionLimit(limit &#x3D; false) &#x2F;&#x2F; 可以用登录直接放行</span><br><span class="line">@RequestBody &#x2F;&#x2F; 接收json类型的参数</span><br></pre></td></tr></table></figure>
+
+<p>这里我们只需要添加这一个接口就可以啦，里面实现的逻辑就和原来的一样，不做任何的修改<br>我们只需要提供需要的参数就可以啦<br><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/23aff44a872c48c9b03337f5f528d4f7~tplv-k3u1fbpfcp-zoom-1.image" alt="xxl-job-add-job"></p>
+<h3 id="创建一个新的项目"><a href="#创建一个新的项目" class="headerlink" title="创建一个新的项目"></a>创建一个新的项目</h3><p>我们这里实现的一个需求就是<br>我们创建一个User用户，在创建时间的基础上加上1分钟，在这个时间自动添加<br>例如：2020-01-01 12:00:00这个时间创建 那么我们应该在2020-01-01 12:00:01这个时间添加</p>
+<h4 id="POM文件"><a href="#POM文件" class="headerlink" title="POM文件"></a>POM文件</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;com.xuxueli&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;xxl-job-core&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;2.2.0&lt;/version&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;com.alibaba&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;fastjson&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;1.2.47&lt;/version&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;lombok&lt;/artifactId&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;cn.hutool&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;hutool-all&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;5.0.6&lt;/version&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="application-yml文件"><a href="#application-yml文件" class="headerlink" title="application.yml文件"></a>application.yml文件</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">server:</span><br><span class="line">  port: <span class="number">10001</span></span><br><span class="line"></span><br><span class="line">xxl:</span><br><span class="line">  job:</span><br><span class="line">    accessToken:</span><br><span class="line">    admin:</span><br><span class="line">      addresses: http:<span class="comment">//localhost:9999/xxl-job-admin</span></span><br><span class="line">    executor:</span><br><span class="line">      address:</span><br><span class="line">      appname: xxl-job-test</span><br><span class="line">      ip:</span><br><span class="line">      logpath: /data/applogs/xxl-job/jobhandler</span><br><span class="line">      logretentiondays: <span class="number">30</span></span><br><span class="line">      port: <span class="number">10010</span></span><br></pre></td></tr></table></figure>
+
+<p>这些配置我相信你再熟悉不过了吧，我们在第一节就看见过啦<br>那么既然配置文件有了，那么我们也要创建一个配置类</p>
+<h4 id="XxlJobConfig"><a href="#XxlJobConfig" class="headerlink" title="XxlJobConfig"></a>XxlJobConfig</h4><blockquote>
+<p>XxlJobConfig</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">XxlJobConfig</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;xxl.job.admin.addresses&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String adminAddresses;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;xxl.job.accessToken&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String accessToken;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;xxl.job.executor.appname&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String appname;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;xxl.job.executor.address&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String address;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;xxl.job.executor.ip&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String ip;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;xxl.job.executor.port&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> port;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;xxl.job.executor.logpath&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String logPath;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;xxl.job.executor.logretentiondays&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> logRetentionDays;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> XxlJobSpringExecutor <span class="title">xxlJobExecutor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        log.info(<span class="string">"&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; xxl-job config init."</span>);</span><br><span class="line">        XxlJobSpringExecutor xxlJobSpringExecutor = <span class="keyword">new</span> XxlJobSpringExecutor();</span><br><span class="line">        xxlJobSpringExecutor.setAdminAddresses(adminAddresses);</span><br><span class="line">        xxlJobSpringExecutor.setAppname(appname);</span><br><span class="line">        xxlJobSpringExecutor.setAddress(address);</span><br><span class="line">        xxlJobSpringExecutor.setIp(ip);</span><br><span class="line">        xxlJobSpringExecutor.setPort(port);</span><br><span class="line">        xxlJobSpringExecutor.setAccessToken(accessToken);</span><br><span class="line">        xxlJobSpringExecutor.setLogPath(logPath);</span><br><span class="line">        xxlJobSpringExecutor.setLogRetentionDays(logRetentionDays);</span><br><span class="line">        <span class="keyword">return</span> xxlJobSpringExecutor;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="基本的工具类"><a href="#基本的工具类" class="headerlink" title="基本的工具类"></a>基本的工具类</h4><blockquote>
+<p>DateUtils 日期工具类</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 日期工具类</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lenovo</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DateUtils</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 日期格式yyyy-MM-dd</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String pattern_date = <span class="string">"yyyy-MM-dd"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 日期时间格式yyyy-MM-dd HH:mm:ss</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String pattern_time = <span class="string">"yyyy-MM-dd HH:mm:ss"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 描述：日期格式化</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> date 日期</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 输出格式为 yyyy-MM-dd 的字串</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">formatDate</span><span class="params">(Date date)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> formatDate(date, pattern_time);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 描述：日期格式化</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> date    日期</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> pattern 格式化类型</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">formatDate</span><span class="params">(Date date, String pattern)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        SimpleDateFormat dateFormat = <span class="keyword">new</span> SimpleDateFormat(pattern);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> dateFormat.format(date);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/***</span></span><br><span class="line"><span class="comment">     * convert Date to cron ,eg.  "0 07 10 15 1 ? 2016"</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> date  : 时间点</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getCron</span><span class="params">(Date date)</span> </span>&#123;</span><br><span class="line">        String dateFormat = <span class="string">"ss mm HH dd MM ? yyyy"</span>;</span><br><span class="line">        <span class="keyword">return</span> formatDate(date, dateFormat);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>JsonUtils 工具类</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JsonUtils</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> ObjectMapper mapper = <span class="keyword">new</span> ObjectMapper();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger = LoggerFactory.getLogger(JsonUtils<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Nullable</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">serialize</span><span class="params">(Object obj)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (obj == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (obj.getClass() == String<span class="class">.<span class="keyword">class</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> (String) obj;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> mapper.writeValueAsString(obj);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (JsonProcessingException e) &#123;</span><br><span class="line">            logger.error(<span class="string">"json序列化出错："</span> + obj, e);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Nullable</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">T <span class="title">parse</span><span class="params">(String json, Class&lt;T&gt; tClass)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> mapper.readValue(json, tClass);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            logger.error(<span class="string">"json解析出错："</span> + json, e);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Nullable</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;E&gt; <span class="function">List&lt;E&gt; <span class="title">parseList</span><span class="params">(String json, Class&lt;E&gt; eClass)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> mapper.readValue(json, mapper.getTypeFactory().constructCollectionType(List<span class="class">.<span class="keyword">class</span>, <span class="title">eClass</span>))</span>;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            logger.error(<span class="string">"json解析出错："</span> + json, e);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Nullable</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;K, V&gt; <span class="function">Map&lt;K, V&gt; <span class="title">parseMap</span><span class="params">(String json, Class&lt;K&gt; kClass, Class&lt;V&gt; vClass)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> mapper.readValue(json, mapper.getTypeFactory().constructMapType(Map<span class="class">.<span class="keyword">class</span>, <span class="title">kClass</span>, <span class="title">vClass</span>))</span>;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            logger.error(<span class="string">"json解析出错："</span> + json, e);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Nullable</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">T <span class="title">nativeRead</span><span class="params">(String json, TypeReference&lt;T&gt; type)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> mapper.readValue(json, type);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            logger.error(<span class="string">"json解析出错："</span> + json, e);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建Response响应信息"><a href="#创建Response响应信息" class="headerlink" title="创建Response响应信息"></a>创建Response响应信息</h4><blockquote>
+<p>ApiResponse</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FcResponse</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Integer code;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String msg;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> T data;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">FcResponse</span><span class="params">(Integer code, String msg, T data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.code = code;</span><br><span class="line">        <span class="keyword">this</span>.msg = msg;</span><br><span class="line">        <span class="keyword">this</span>.data = data;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建一个domain"><a href="#创建一个domain" class="headerlink" title="创建一个domain"></a>创建一个domain</h4><blockquote>
+<p>XxlJobInfo</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">XxlJobInfo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> id;				<span class="comment">// 主键ID</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> jobGroup;		<span class="comment">// 执行器主键ID</span></span><br><span class="line">    <span class="keyword">private</span> String jobDesc;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Date addTime;</span><br><span class="line">    <span class="keyword">private</span> Date updateTime;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String author;		<span class="comment">// 负责人</span></span><br><span class="line">    <span class="keyword">private</span> String alarmEmail;	<span class="comment">// 报警邮件</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String scheduleType;			<span class="comment">// 调度类型</span></span><br><span class="line">    <span class="keyword">private</span> String scheduleConf;			<span class="comment">// 调度配置，值含义取决于调度类型</span></span><br><span class="line">    <span class="keyword">private</span> String misfireStrategy;			<span class="comment">// 调度过期策略</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String executorRouteStrategy;	<span class="comment">// 执行器路由策略</span></span><br><span class="line">    <span class="keyword">private</span> String executorHandler;		    <span class="comment">// 执行器，任务Handler名称</span></span><br><span class="line">    <span class="keyword">private</span> String executorParam;		    <span class="comment">// 执行器，任务参数</span></span><br><span class="line">    <span class="keyword">private</span> String executorBlockStrategy;	<span class="comment">// 阻塞处理策略</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> executorTimeout;     		<span class="comment">// 任务执行超时时间，单位秒</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> executorFailRetryCount;		<span class="comment">// 失败重试次数</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String glueType;		<span class="comment">// GLUE类型	#com.xxl.job.core.glue.GlueTypeEnum</span></span><br><span class="line">    <span class="keyword">private</span> String glueSource;		<span class="comment">// GLUE源代码</span></span><br><span class="line">    <span class="keyword">private</span> String glueRemark;		<span class="comment">// GLUE备注</span></span><br><span class="line">    <span class="keyword">private</span> Date glueUpdatetime;	<span class="comment">// GLUE更新时间</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String childJobId;		<span class="comment">// 子任务ID，多个逗号分隔</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> triggerStatus;		<span class="comment">// 调度状态：0-停止，1-运行</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> triggerLastTime;	<span class="comment">// 上次调度时间</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> triggerNextTime;	<span class="comment">// 下次调度时间</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>那么这个就是我们需要传入的参数</p>
+<h4 id="XxlUtil工具类"><a href="#XxlUtil工具类" class="headerlink" title="XxlUtil工具类"></a>XxlUtil工具类</h4><blockquote>
+<p>XxlUtil</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">XxlUtil</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 地址</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String adminAddress = <span class="string">"http://localhost:9999/xxl-job-admin"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span>(required = <span class="keyword">false</span>)</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> RestTemplate restTemplate = <span class="keyword">new</span> RestTemplate();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 请求Url</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String ADD_INFO_URL = <span class="string">"/jobinfo/addJob"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String UPDATE_INFO_URL = <span class="string">"/jobinfo/updateJob"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String REMOVE_INFO_URL = <span class="string">"/jobinfo/removeJob"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String GET_GROUP_ID = <span class="string">"/jobgroup/loadByAppName"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 添加任务</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> xxlJobInfo</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> appName</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">addJob</span><span class="params">(XxlJobInfo xxlJobInfo, String appName)</span></span>&#123;</span><br><span class="line">        Map&lt;String, Object&gt; params = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        params.put(<span class="string">"appName"</span>,appName);</span><br><span class="line">        String json = JsonUtils.serialize(params);</span><br><span class="line">        String result = doPost(adminAddress + GET_GROUP_ID, json);</span><br><span class="line">        JSONObject jsonObject = JSON.parseObject(result);</span><br><span class="line">        Map&lt;String, Object&gt; map  = (Map&lt;String, Object&gt;) jsonObject.get(<span class="string">"content"</span>);</span><br><span class="line">        Integer groupId = (Integer) map.get(<span class="string">"id"</span>);</span><br><span class="line">        xxlJobInfo.setJobGroup(groupId);</span><br><span class="line">        String json2 = JSONObject.toJSONString(xxlJobInfo);</span><br><span class="line">        <span class="keyword">return</span> doPost(adminAddress + ADD_INFO_URL, json2);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 远程调用</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> url</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> json</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">doPost</span><span class="params">(String url, String json)</span> </span>&#123;</span><br><span class="line">        HttpHeaders headers = <span class="keyword">new</span> HttpHeaders();</span><br><span class="line">        headers.setContentType(MediaType.APPLICATION_JSON);</span><br><span class="line">        HttpEntity&lt;String&gt; entity = <span class="keyword">new</span> HttpEntity&lt;&gt;(json,headers);</span><br><span class="line">        ResponseEntity&lt;String&gt; responseEntity = restTemplate.postForEntity(url, entity, String<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">        <span class="keyword">return</span> responseEntity.getBody();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里对代码进行讲解下</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> &#x2F;**</span><br><span class="line">     * 远程调用</span><br><span class="line">     * @param url</span><br><span class="line">     * @param json</span><br><span class="line">     *&#x2F;</span><br><span class="line">    private String doPost(String url, String json) &#123;</span><br><span class="line">        HttpHeaders headers &#x3D; new HttpHeaders();</span><br><span class="line">        headers.setContentType(MediaType.APPLICATION_JSON);</span><br><span class="line">        HttpEntity&lt;String&gt; entity &#x3D; new HttpEntity&lt;&gt;(json,headers);</span><br><span class="line">        ResponseEntity&lt;String&gt; responseEntity &#x3D; restTemplate.postForEntity(url, entity, String.class);</span><br><span class="line">        return responseEntity.getBody();</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 这个就是我们进行远程调用的方法，我们一个是请求的url，第二个就是参数</span><br><span class="line">然后调用返回主体信息</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">       Map&lt;String, Object&gt; params &#x3D; new HashMap&lt;&gt;();</span><br><span class="line">        params.put(&quot;appName&quot;,appName);</span><br><span class="line">        String json &#x3D; JsonUtils.serialize(params);</span><br><span class="line">        String result &#x3D; doPost(adminAddress + GET_GROUP_ID, json);</span><br><span class="line">        JSONObject jsonObject &#x3D; JSON.parseObject(result);</span><br><span class="line">        Map&lt;String, Object&gt; map  &#x3D; (Map&lt;String, Object&gt;) jsonObject.get(&quot;content&quot;);</span><br><span class="line">        Integer groupId &#x3D; (Integer) map.get(&quot;id&quot;);</span><br><span class="line">        xxlJobInfo.setJobGroup(groupId);</span><br><span class="line">        String json2 &#x3D; JSONObject.toJSONString(xxlJobInfo);</span><br><span class="line">        return doPost(adminAddress + ADD_INFO_URL, json2);</span><br><span class="line"></span><br><span class="line">其中有一个appName，何为appName--执行器的名称，也就是我们的任务是在哪一个执行器下执行的</span><br><span class="line">首先呢我们需要通过执行器的名称来查询执行器的id，对应数据库中的xxl_job_group中的id字段</span><br><span class="line">我们在xxl_job_info这个表中也可以清楚的看见有个job_group这个字段</span><br><span class="line">这样我们将其设置到xxlJobInfo中，然后进行远程调用我们的添加接口，这样就实现了远程调用</span><br></pre></td></tr></table></figure>
+
+<p>在上面我们提到根据执行器名称来查询执行器id，那么这个接口在哪里呢，其实和任务添加的一样，我们也需要去开发一个新的接口</p>
+<h4 id="修改xxl-job-admin中的JobGroupController"><a href="#修改xxl-job-admin中的JobGroupController" class="headerlink" title="修改xxl-job-admin中的JobGroupController"></a>修改xxl-job-admin中的JobGroupController</h4><p>添加如下接口</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/loadByAppName"</span>)</span><br><span class="line">	<span class="meta">@ResponseBody</span></span><br><span class="line">	<span class="meta">@PermissionLimit</span>(limit = <span class="keyword">false</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> ReturnT&lt;XxlJobGroup&gt; <span class="title">loadByAppName</span><span class="params">(@RequestBody Map&lt;String,Object&gt; map)</span></span>&#123;</span><br><span class="line">		XxlJobGroup jobGroup = xxlJobGroupDao.loadByAppName(map);</span><br><span class="line">		<span class="keyword">return</span> jobGroup!=<span class="keyword">null</span>?<span class="keyword">new</span> ReturnT&lt;XxlJobGroup&gt;(jobGroup):<span class="keyword">new</span> ReturnT&lt;XxlJobGroup&gt;(ReturnT.FAIL_CODE, <span class="keyword">null</span>);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="继续创建dao下的方法"><a href="#继续创建dao下的方法" class="headerlink" title="继续创建dao下的方法"></a>继续创建dao下的方法</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function">XxlJobGroup <span class="title">loadByAppName</span><span class="params">(Map&lt;String, Object&gt; map)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建查询语句"><a href="#创建查询语句" class="headerlink" title="创建查询语句"></a>创建查询语句</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&lt;select id=<span class="string">"loadByAppName"</span> parameterType=<span class="string">"hashmap"</span> resultMap=<span class="string">"XxlJobGroup"</span>&gt;</span><br><span class="line">		SELECT &lt;include refid=<span class="string">"Base_Column_List"</span> /&gt;</span><br><span class="line">		FROM xxl_job_group AS t</span><br><span class="line">		WHERE t.app_name = #&#123;appName&#125;</span><br><span class="line">	&lt;/select&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这样我们的执行器id就查询出来了</p>
+<p>好了，既然我们的远程调用接口写好了，我们将来写本地的接口</p>
+<h4 id="首先创建UserController"><a href="#首先创建UserController" class="headerlink" title="首先创建UserController"></a>首先创建UserController</h4><blockquote>
+<p>UserController</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"codeworld-xxl"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">XxlController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span>(required = <span class="keyword">false</span>)</span><br><span class="line">    <span class="keyword">private</span> XxlService xxlService;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 添加任务</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@PostMapping</span>(<span class="string">"add-job"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> FcResponse&lt;Void&gt; <span class="title">addJob</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.xxlService.addJob();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="接着UserService"><a href="#接着UserService" class="headerlink" title="接着UserService"></a>接着UserService</h4><blockquote>
+<p>UserService</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">XxlService</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 添加任务</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function">FcResponse&lt;Void&gt; <span class="title">addJob</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="再接着UserServiceImpl"><a href="#再接着UserServiceImpl" class="headerlink" title="再接着UserServiceImpl"></a>再接着UserServiceImpl</h4><blockquote>
+<p>UserServiceImpl</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">XxlServiceImpl</span> <span class="keyword">implements</span> <span class="title">XxlService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span>(required = <span class="keyword">false</span>)</span><br><span class="line">    <span class="keyword">private</span> XxlUtil xxlUtil;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 添加任务</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> FcResponse&lt;Void&gt; <span class="title">addJob</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        User user = <span class="keyword">new</span> User();</span><br><span class="line">        user.setId(<span class="number">1000L</span>);</span><br><span class="line">        user.setUserName(<span class="string">"code"</span>);</span><br><span class="line">        user.setCreateTime(<span class="keyword">new</span> Date());</span><br><span class="line">        XxlJobInfo xxlJobInfo = <span class="keyword">new</span> XxlJobInfo();</span><br><span class="line">        xxlJobInfo.setJobDesc(<span class="string">"测试用户定时添加"</span>);</span><br><span class="line">        xxlJobInfo.setAuthor(<span class="string">"admin"</span>);</span><br><span class="line">        xxlJobInfo.setScheduleType(<span class="string">"CRON"</span>);</span><br><span class="line">        Date startTime = <span class="keyword">new</span> Date(user.getCreateTime().getTime() + <span class="number">60000</span>);</span><br><span class="line">        xxlJobInfo.setScheduleConf(DateUtils.getCron(startTime));</span><br><span class="line">        xxlJobInfo.setGlueType(<span class="string">"BEAN"</span>);</span><br><span class="line">        xxlJobInfo.setExecutorHandler(<span class="string">"addUser"</span>);</span><br><span class="line">        xxlJobInfo.setExecutorParam(JsonUtils.serialize(user));</span><br><span class="line">        xxlJobInfo.setExecutorRouteStrategy(<span class="string">"FIRST"</span>);</span><br><span class="line">        xxlJobInfo.setMisfireStrategy(<span class="string">"DO_NOTHING"</span>);</span><br><span class="line">        xxlJobInfo.setExecutorBlockStrategy(<span class="string">"SERIAL_EXECUTION"</span>);</span><br><span class="line">        xxlJobInfo.setTriggerStatus(<span class="number">1</span>);</span><br><span class="line">        xxlUtil.addJob(xxlJobInfo, <span class="string">"xxl-job-test"</span>);</span><br><span class="line">        log.info(<span class="string">"任务已添加，将在&#123;&#125;开始执行任务"</span>,DateUtil.date(startTime));</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> FcResponse&lt;&gt;(<span class="number">1</span>,<span class="string">"任务添加成功"</span>,<span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里呢我们就直接指定创建用户了，重点不是用户而是我们的XxlJobInfo</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">xxlJobInfo.setJobDesc(&quot;测试用户定时添加&quot;); &#x2F;&#x2F; 描述信息</span><br><span class="line">xxlJobInfo.setAuthor(&quot;admin&quot;); &#x2F;&#x2F; 执行人</span><br><span class="line">xxlJobInfo.setScheduleType(&quot;CRON&quot;); &#x2F;&#x2F; 执行类型 采用CRON表达式</span><br><span class="line">Date startTime &#x3D; new Date(user.getCreateTime().getTime() + 60000); &#x2F;&#x2F; 在创建时间上加上1分钟</span><br><span class="line">xxlJobInfo.setScheduleConf(DateUtils.getCron(startTime)); &#x2F;&#x2F; 设置cron</span><br><span class="line">xxlJobInfo.setGlueType(&quot;BEAN&quot;); &#x2F;&#x2F; 设置GLUE类型为BEAN模式</span><br><span class="line">xxlJobInfo.setExecutorHandler(&quot;addUser&quot;); &#x2F;&#x2F; 设置任务Handler名称</span><br><span class="line">xxlJobInfo.setExecutorParam(JsonUtils.serialize(user)); &#x2F;&#x2F; 设置参数</span><br><span class="line">xxlJobInfo.setExecutorRouteStrategy(&quot;FIRST&quot;); &#x2F;&#x2F; 执行器路由策略</span><br><span class="line">xxlJobInfo.setMisfireStrategy(&quot;DO_NOTHING&quot;); &#x2F;&#x2F; 调度过期策略</span><br><span class="line">xxlJobInfo.setExecutorBlockStrategy(&quot;SERIAL_EXECUTION&quot;); &#x2F;&#x2F; 阻塞处理策略</span><br><span class="line">xxlJobInfo.setTriggerStatus(1); &#x2F;&#x2F; 调度状态：0-停止，1-运行</span><br><span class="line">xxlUtil.addJob(xxlJobInfo, &quot;xxl-job-test&quot;); &#x2F;&#x2F; 调用工具类方法，xxl-job-test为执行器名称</span><br></pre></td></tr></table></figure>
+
+<p>那么到这里我们接口写完了<br>那么我们应该怎么执行任务呢</p>
+<h4 id="UserTask"><a href="#UserTask" class="headerlink" title="UserTask"></a>UserTask</h4><blockquote>
+<p>UserTask</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserTask</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@XxlJob</span>(value = <span class="string">"addUser"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ReturnT&lt;String&gt; <span class="title">addUser</span><span class="params">(String param)</span></span>&#123;</span><br><span class="line">        log.info(<span class="string">"开始执行任务,在指定时间添加用户，收到参数&#123;&#125;，当前时间&#123;&#125;"</span>,param, DateUtil.date(<span class="keyword">new</span> Date()));</span><br><span class="line">        <span class="keyword">return</span> ReturnT.SUCCESS;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个就是我们执行任务的方法，可以看见我们在这个@XxxlJob(value=”addUser”)和参数里的xxlJobInfo.setExecutorHandler(“addUser”); 是一一对应的</p>
+<p>好了到这里我么的全部详解就说明完了</p>
+<p>不过说了这么多，到底行不行呢？</p>
+<h3 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h3><h4 id="首先先启动xxl-job-admin这个项目"><a href="#首先先启动xxl-job-admin这个项目" class="headerlink" title="首先先启动xxl-job-admin这个项目"></a>首先先启动xxl-job-admin这个项目</h4><p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/637e4450945f4fc1831383bc60b94fa8~tplv-k3u1fbpfcp-zoom-1.image" alt="xxl-job-start"></p>
+<h4 id="启动本地项目"><a href="#启动本地项目" class="headerlink" title="启动本地项目"></a>启动本地项目</h4><p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1ef34b3f69a34123bc14521f74b668a6~tplv-k3u1fbpfcp-zoom-1.image" alt="xxl-job-customize"><br>看见这个就是xxl加载成功啦</p>
+<h4 id="我们需要去创建一个执行器，名称是xxl-job-test"><a href="#我们需要去创建一个执行器，名称是xxl-job-test" class="headerlink" title="我们需要去创建一个执行器，名称是xxl-job-test"></a>我们需要去创建一个执行器，名称是xxl-job-test</h4><p>这个就不用上图片了吧，去<a href="https://feicheng.xyz/2021/01/14/XXL-JOB%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E9%BB%98%E8%AE%A4%E4%BD%BF%E7%94%A8/" target="_blank" rel="noopener">CodeWorld-Cloud-Shop XXL-JOB入门详解篇—奶妈级教学</a></p>
+<h4 id="调用接口"><a href="#调用接口" class="headerlink" title="调用接口"></a>调用接口</h4><p><code>http://localhost:10001/codeworld-xxl/add-job</code><br><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3095cdd580b94311aa6c2498221cb16b~tplv-k3u1fbpfcp-zoom-1.image" alt="add-job-customize"><br>出现这个说明接口调用成功啦<br>再来看我们的控制台<br><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7191bf058ea446a2a7b74ada54b7b55a~tplv-k3u1fbpfcp-zoom-1.image" alt="add-task-success"><br>说明我们的任务已经添加成功啦<br>然后等着1分钟后看看会不会执行任务<br><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c355dc3bd56b4915b12ae20100799d3b~tplv-k3u1fbpfcp-zoom-1.image" alt="add-task-result"></p>
+<p>哇哦，看来执行成功了，那么我们就这样成功了。<br>那么轮播图的问题就解决了，动态创建任务实现实现了轮播图的上线和下线<br><a href="https://github.com/javaenigneer/SpringBoot-demo" target="_blank" rel="noopener">代码地址</a></p>
+<p>好了，本次的技术解析就到这里了？如果觉得不错的话，点亮一下小星星<a href="https://github.com/javaenigneer/codeworld-cloud-shop-api" target="_blank" rel="noopener">codeworld-cloud-shop</a><br>只看不点，不是好孩子哦！！</p>
+<h3 id="欢迎加入QQ群-964285437"><a href="#欢迎加入QQ群-964285437" class="headerlink" title="欢迎加入QQ群(964285437)"></a>欢迎加入QQ群(964285437)</h3><p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/28ed574f8c834d3cb88e4ef804f6e9dd~tplv-k3u1fbpfcp-zoom-1.image" alt="QQ群"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    CodeWorld
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://javaenigneer.github.io/2021/01/22/XXL-JOB%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BA%E4%BB%BB%E5%8A%A1%E8%AF%A6%E8%A7%A3%E7%AF%872/" title="XXL-JOB动态创建任务详解篇2">https://javaenigneer.github.io/2021/01/22/XXL-JOB%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BA%E4%BB%BB%E5%8A%A1%E8%AF%A6%E8%A7%A3%E7%AF%872/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/01/22/XXL-JOB%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BA%E4%BB%BB%E5%8A%A1%E8%AF%A6%E8%A7%A3%E7%AF%871/" rel="next" title="XXL-JOB动态创建任务详解篇1">
+                <i class="fa fa-chevron-left"></i> XXL-JOB动态创建任务详解篇1
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.gif"
+                alt="CodeWorld" />
+            
+              <p class="site-author-name" itemprop="name">CodeWorld</p>
+              <p class="site-description motion-element" itemprop="description">越努力，越幸运</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/javaenigneer" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="1692454247@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://github.com/" title="Github" target="_blank">Github</a>
+                  </li>
+                
+              </ul>
+              <div id="days"></div>
+<script>
+function show_date_time(){
+    window.setTimeout("show_date_time()", 1000);
+    BirthDay=new Date("04/10/2019 12:13:14");
+    today=new Date();
+    timeold=(today.getTime()-BirthDay.getTime());
+    sectimeold=timeold/1000
+    secondsold=Math.floor(sectimeold);
+    msPerDay=24*60*60*1000
+    e_daysold=timeold/msPerDay
+    daysold=Math.floor(e_daysold);
+    e_hrsold=(e_daysold-daysold)*24;
+    hrsold=setzero(Math.floor(e_hrsold));
+    e_minsold=(e_hrsold-hrsold)*60;
+    minsold=setzero(Math.floor((e_hrsold-hrsold)*60));
+    seconds=setzero(Math.floor((e_minsold-minsold)*60));
+    document.getElementById('days').innerHTML="已运行 "+daysold+" 天 "+hrsold+" 小时 "+minsold+" 分 "+seconds+" 秒";
+}
+function setzero(i) {
+    if (i<10) {
+        i="0" + i
+    };
+    return i;
+}
+show_date_time();
+</script>
+
+            </div>
+          
+
+          <div id="days"></div>
+<script>
+function show_date_time(){
+    window.setTimeout("show_date_time()", 1000);
+    BirthDay=new Date("04/10/2019 12:13:14");
+    today=new Date();
+    timeold=(today.getTime()-BirthDay.getTime());
+    sectimeold=timeold/1000
+    secondsold=Math.floor(sectimeold);
+    msPerDay=24*60*60*1000
+    e_daysold=timeold/msPerDay
+    daysold=Math.floor(e_daysold);
+    e_hrsold=(e_daysold-daysold)*24;
+    hrsold=setzero(Math.floor(e_hrsold));
+    e_minsold=(e_hrsold-hrsold)*60;
+    minsold=setzero(Math.floor((e_hrsold-hrsold)*60));
+    seconds=setzero(Math.floor((e_minsold-minsold)*60));
+    document.getElementById('days').innerHTML="已运行 "+daysold+" 天 "+hrsold+" 小时 "+minsold+" 分 "+seconds+" 秒";
+}
+function setzero(i) {
+    if (i<10) {
+        i="0" + i
+    };
+    return i;
+}
+show_date_time();
+</script>
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CodeWorld-Cloud-Shop-XXL-JOB动态创建任务详解篇2—奶妈级教学"><span class="nav-number">1.</span> <span class="nav-text">CodeWorld-Cloud-Shop XXL-JOB动态创建任务详解篇2—奶妈级教学</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改xxl-job-admin的接口"><span class="nav-number">1.2.</span> <span class="nav-text">修改xxl-job-admin的接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一个新的项目"><span class="nav-number">1.3.</span> <span class="nav-text">创建一个新的项目</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#POM文件"><span class="nav-number">1.3.1.</span> <span class="nav-text">POM文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#application-yml文件"><span class="nav-number">1.3.2.</span> <span class="nav-text">application.yml文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#XxlJobConfig"><span class="nav-number">1.3.3.</span> <span class="nav-text">XxlJobConfig</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基本的工具类"><span class="nav-number">1.3.4.</span> <span class="nav-text">基本的工具类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建Response响应信息"><span class="nav-number">1.3.5.</span> <span class="nav-text">创建Response响应信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建一个domain"><span class="nav-number">1.3.6.</span> <span class="nav-text">创建一个domain</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#XxlUtil工具类"><span class="nav-number">1.3.7.</span> <span class="nav-text">XxlUtil工具类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改xxl-job-admin中的JobGroupController"><span class="nav-number">1.3.8.</span> <span class="nav-text">修改xxl-job-admin中的JobGroupController</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#继续创建dao下的方法"><span class="nav-number">1.3.9.</span> <span class="nav-text">继续创建dao下的方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建查询语句"><span class="nav-number">1.3.10.</span> <span class="nav-text">创建查询语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#首先创建UserController"><span class="nav-number">1.3.11.</span> <span class="nav-text">首先创建UserController</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#接着UserService"><span class="nav-number">1.3.12.</span> <span class="nav-text">接着UserService</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#再接着UserServiceImpl"><span class="nav-number">1.3.13.</span> <span class="nav-text">再接着UserServiceImpl</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UserTask"><span class="nav-number">1.3.14.</span> <span class="nav-text">UserTask</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实践"><span class="nav-number">1.4.</span> <span class="nav-text">实践</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#首先先启动xxl-job-admin这个项目"><span class="nav-number">1.4.1.</span> <span class="nav-text">首先先启动xxl-job-admin这个项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动本地项目"><span class="nav-number">1.4.2.</span> <span class="nav-text">启动本地项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#我们需要去创建一个执行器，名称是xxl-job-test"><span class="nav-number">1.4.3.</span> <span class="nav-text">我们需要去创建一个执行器，名称是xxl-job-test</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#调用接口"><span class="nav-number">1.4.4.</span> <span class="nav-text">调用接口</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#欢迎加入QQ群-964285437"><span class="nav-number">1.5.</span> <span class="nav-text">欢迎加入QQ群(964285437)</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 &mdash; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">CodeWorld</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      你是来访的第
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      位小伙伴
+    </span>
+  
+
+  
+    <span class="site-pv">
+      访问次数：
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'pcElkxj59x36vSvxVsiJiwW8-gzGzoHsz',
+        appKey: 'gpN19IqqR1PyPEXyladMiHeQ',
+        placeholder: '留下邮箱，有回复时你将收到提醒，邮箱不会被公开',
+        avatar:'wavatar',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("pcElkxj59x36vSvxVsiJiwW8-gzGzoHsz", "gpN19IqqR1PyPEXyladMiHeQ");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: ,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+
+</body>
+</html>

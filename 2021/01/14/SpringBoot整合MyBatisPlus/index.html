@@ -1,0 +1,1587 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-flash.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/lfavicon-32x32-next.png?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="SpringBoot," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Hello，大家好，我是一个在互联网收废铁的程序员，已经很久没有更新过文章了，今天呢，就来学习一下新的知识点吧。今天呢？我们来讲讲什么好呢？  好吧，今天我们就简单的来学习一下MyBatisPlus吧 废话我们就不用多说了吧，我们直接进入我们的正题  别慌，我们还是要来看看MyBatisPlus是什么啊 简介MyBatis-Plus(简称MP)是一个MyBatis的增强工具，在 MyBatis的基">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot整合MyBatisPlus">
+<meta property="og:url" content="https://javaenigneer.github.io/2021/01/14/SpringBoot%E6%95%B4%E5%90%88MyBatisPlus/index.html">
+<meta property="og:site_name" content="CodeWorld | 收废铁">
+<meta property="og:description" content="Hello，大家好，我是一个在互联网收废铁的程序员，已经很久没有更新过文章了，今天呢，就来学习一下新的知识点吧。今天呢？我们来讲讲什么好呢？  好吧，今天我们就简单的来学习一下MyBatisPlus吧 废话我们就不用多说了吧，我们直接进入我们的正题  别慌，我们还是要来看看MyBatisPlus是什么啊 简介MyBatis-Plus(简称MP)是一个MyBatis的增强工具，在 MyBatis的基">
+<meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1603964996271&di=667b1713c9d20ddbf86a4468774b2c9a&imgtype=0&src=http%253A%252F%252Ff.hiphotos.baidu.com%252Fimage%252Fpic%252Fitem%252Fa71ea8d3fd1f4134ca927c3f2e1f95cad0c85ecd.jpg">
+<meta property="og:image" content="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3801351691,4186193035&fm=26&gp=0.jpg">
+<meta property="og:image" content="https://baomidou.com/img/relationship-with-mybatis.png">
+<meta property="og:image" content="data:image/jpeg;base64,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">
+<meta property="og:image" content="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2931220727,4225309432&fm=26&gp=0.jpg">
+<meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1603966485238&di=c51fc8ea2d378fc2bb92ec6bed003db4&imgtype=0&src=http%253A%252F%252Fhiphotos.baidu.com%252Ffeed%252Fpic%252Fitem%252F2cf5e0fe9925bc31d559316a52df8db1cb13703f.jpg">
+<meta property="og:image" content="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1502772899,4276092948&fm=26&gp=0.jpg">
+<meta property="og:image" content="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/10/%E6%A0%B9%E6%8D%AEid%E6%9F%A5%E8%AF%A2.png">
+<meta property="og:image" content="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2901848610,1493242756&fm=26&gp=0.jpg">
+<meta property="og:image" content="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/temp_qrcode_share_964285437.png">
+<meta property="article:published_time" content="2021-01-14T09:07:43.000Z">
+<meta property="article:modified_time" content="2021-01-14T09:08:33.259Z">
+<meta property="article:author" content="CodeWorld">
+<meta property="article:tag" content="SpringBoot">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1603964996271&di=667b1713c9d20ddbf86a4468774b2c9a&imgtype=0&src=http%253A%252F%252Ff.hiphotos.baidu.com%252Fimage%252Fpic%252Fitem%252Fa71ea8d3fd1f4134ca927c3f2e1f95cad0c85ecd.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://javaenigneer.github.io/2021/01/14/SpringBoot整合MyBatisPlus/"/>
+
+
+
+
+
+  <title>SpringBoot整合MyBatisPlus | CodeWorld | 收废铁</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CodeWorld | 收废铁</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">CodeWorld</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://javaenigneer.github.io/2021/01/14/SpringBoot%E6%95%B4%E5%90%88MyBatisPlus/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="CodeWorld">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CodeWorld | 收废铁">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SpringBoot整合MyBatisPlus</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-01-14T17:07:43+08:00">
+                2021-01-14
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2021-01-14T17:08:33+08:00">
+                2021-01-14
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MyBatis-Plus/" itemprop="url" rel="index">
+                    <span itemprop="name">MyBatis-Plus</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/01/14/SpringBoot%E6%95%B4%E5%90%88MyBatisPlus/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2021/01/14/SpringBoot%E6%95%B4%E5%90%88MyBatisPlus/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2021/01/14/SpringBoot%E6%95%B4%E5%90%88MyBatisPlus/" class="leancloud_visitors" data-flag-title="SpringBoot整合MyBatisPlus">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Hello，大家好，我是一个在互联网收废铁的程序员，已经很久没有更新过文章了，今天呢，就来学习一下新的知识点吧。今天呢？我们来讲讲什么好呢？</p>
+<p><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1603964996271&di=667b1713c9d20ddbf86a4468774b2c9a&imgtype=0&src=http%3A%2F%2Ff.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2Fa71ea8d3fd1f4134ca927c3f2e1f95cad0c85ecd.jpg" alt=""></p>
+<p>好吧，今天我们就简单的来学习一下MyBatisPlus吧</p>
+<p>废话我们就不用多说了吧，我们直接进入我们的正题</p>
+<p><img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3801351691,4186193035&fm=26&gp=0.jpg" alt=""></p>
+<p>别慌，我们还是要来看看MyBatisPlus是什么啊</p>
+<h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p><strong>MyBatis-Plus</strong>(简称MP)是一个<strong>MyBatis</strong>的增强工具，在 <strong>MyBatis</strong>的基础上只做增强不做改变，为简化开发、提高效率而生。</p>
+<p><img src="https://baomidou.com/img/relationship-with-mybatis.png" alt=""></p>
+<h4 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h4><ul>
+<li><strong>无侵入</strong>：只做增强不做改变，引入它不会对现有工程产生影响，如丝般顺滑</li>
+<li><strong>损耗小</strong>：启动即会自动注入基本 CURD，性能基本无损耗，直接面向对象操作</li>
+<li><strong>强大的 CRUD 操作</strong>：内置通用 Mapper、通用 Service，仅仅通过少量配置即可实现单表大部分 CRUD 操作，更有强大的条件构造器，满足各类使用需求</li>
+<li><strong>支持 Lambda 形式调用</strong>：通过 Lambda 表达式，方便的编写各类查询条件，无需再担心字段写错</li>
+<li><strong>支持主键自动生成</strong>：支持多达 4 种主键策略（内含分布式唯一 ID 生成器 - Sequence），可自由配置，完美解决主键问题</li>
+<li><strong>支持 ActiveRecord 模式</strong>：支持 ActiveRecord 形式调用，实体类只需继承 Model 类即可进行强大的 CRUD 操作</li>
+<li><strong>支持自定义全局通用操作</strong>：支持全局通用方法注入（ Write once, use anywhere ）</li>
+<li><strong>内置代码生成器</strong>：采用代码或者 Maven 插件可快速生成 Mapper 、 Model 、 Service 、 Controller 层代码，支持模板引擎，更有超多自定义配置等您来使用</li>
+<li><strong>内置分页插件</strong>：基于 MyBatis 物理分页，开发者无需关心具体操作，配置好插件之后，写分页等同于普通 List 查询</li>
+<li><strong>分页插件支持多种数据库</strong>：支持 MySQL、MariaDB、Oracle、DB2、H2、HSQL、SQLite、Postgre、SQLServer 等多种数据库</li>
+<li><strong>内置性能分析插件</strong>：可输出 Sql 语句以及其执行时间，建议开发测试时启用该功能，能快速揪出慢查询</li>
+<li><strong>内置全局拦截插件</strong>：提供全表 delete 、 update 操作智能分析阻断，也可自定义拦截规则，预防误操作</li>
+</ul>
+<p>我的天，这不就是官网的吗？这偷工减料的</p>
+<p><img src="data:image/jpeg;base64,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" alt=""></p>
+<p>不说了，不说了，接下来才是我们的正题</p>
+<h4 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h4><p>这个就不用多说了吧，现在开发JAVA基本上都是IDEA，直接使用快捷创建(Spring Initializr)快速创建这个SpringBoot项目</p>
+<p><img src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2931220727,4225309432&fm=26&gp=0.jpg" alt=""></p>
+<h4 id="编写POM文件"><a href="#编写POM文件" class="headerlink" title="编写POM文件"></a>编写POM文件</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;mysql&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;lombok&lt;/artifactId&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!-- mybatisPlus 核心库 --&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;com.baomidou&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;mybatis-plus-boot-starter&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;3.1.0&lt;/version&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line">        &lt;!-- 引入阿里数据库连接池 --&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;com.alibaba&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;druid&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;1.1.6&lt;/version&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="编写application-yml文件"><a href="#编写application-yml文件" class="headerlink" title="编写application.yml文件"></a>编写application.yml文件</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">#端口</span><br><span class="line">server:</span><br><span class="line">  port: <span class="number">8001</span></span><br><span class="line">#数据源</span><br><span class="line">spring:</span><br><span class="line">  datasource:</span><br><span class="line">    url: jdbc:mysql:<span class="comment">//localhost:3306/test?useUnicode=true&amp;characterEncoding=UTF-8&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=GMT%2b8</span></span><br><span class="line">    driver-class-name: com.mysql.cj.jdbc.Driver</span><br><span class="line">    username: root</span><br><span class="line">    password: root</span><br><span class="line">    type: com.alibaba.druid.pool.DruidDataSource</span><br><span class="line"></span><br><span class="line">#mybatis-plus配置</span><br><span class="line">mybatis-plus:</span><br><span class="line">  mapper-locations: classpath:mapper<span class="comment">/*.xml</span></span><br></pre></td></tr></table></figure>
+
+<p>这里面的基本配置都应该知道的吧</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">#mybatis-plus配置</span><br><span class="line">mybatis-plus:</span><br><span class="line">  mapper-locations: classpath:mapper<span class="comment">/*.xml</span></span><br></pre></td></tr></table></figure>
+
+<p>这个和还是和我们以前的MyBatis配置一样</p>
+<h4 id="创建数据库test，创建表user"><a href="#创建数据库test，创建表user" class="headerlink" title="创建数据库test，创建表user"></a>创建数据库test，创建表user</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CREATE TABLE &#96;user&#96; (</span><br><span class="line">  &#96;id&#96; int(11) NOT NULL AUTO_INCREMENT,</span><br><span class="line">  &#96;name&#96; varchar(50) DEFAULT NULL,</span><br><span class="line">  &#96;password&#96; varchar(64) DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (&#96;id&#96;)</span><br><span class="line">) ENGINE&#x3D;InnoDB AUTO_INCREMENT&#x3D;15 DEFAULT CHARSET&#x3D;utf8</span><br></pre></td></tr></table></figure>
+
+<p>到这里我们的前期工作就做完了，基本的配置信息都大概了解了吧</p>
+<p><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1603966485238&di=c51fc8ea2d378fc2bb92ec6bed003db4&imgtype=0&src=http%3A%2F%2Fhiphotos.baidu.com%2Ffeed%2Fpic%2Fitem%2F2cf5e0fe9925bc31d559316a52df8db1cb13703f.jpg" alt=""></p>
+<p>没看懂没关系，我们再看一遍，一遍还没懂，也没关系，我们再看一遍</p>
+<p>一遍又一遍，你就嗝屁在这里吧。我要继续往下讲咯</p>
+<h4 id="配置类"><a href="#配置类" class="headerlink" title="配置类"></a>配置类</h4><blockquote>
+<p>我们新建一个配置类</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.codeworld.fc.config;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;</span><br><span class="line"><span class="keyword">import</span> com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * ClassName MyBatisPlusConfig</span></span><br><span class="line"><span class="comment"> * Description TODO</span></span><br><span class="line"><span class="comment"> * Author Lenovo</span></span><br><span class="line"><span class="comment"> * Date 2020/10/29</span></span><br><span class="line"><span class="comment"> * Version 1.0</span></span><br><span class="line"><span class="comment">**/</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyBatisPlusConfig</span> </span>&#123;</span><br><span class="line">    <span class="comment">// SQL执行效率插件</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> PerformanceInterceptor <span class="title">performanceInterceptor</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> PerformanceInterceptor();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 分页插件</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> PaginationInterceptor <span class="title">paginationInterceptor</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> PaginationInterceptor();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>主要功能在这个注释里面了，我就不用一一解释了吧</p>
+<h4 id="用户类User"><a href="#用户类User" class="headerlink" title="用户类User"></a>用户类User</h4><blockquote>
+<p>新建一个User类</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.codeworld.fc.entity;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.baomidou.mybatisplus.annotation.IdType;</span><br><span class="line"><span class="keyword">import</span> com.baomidou.mybatisplus.annotation.TableId;</span><br><span class="line"><span class="keyword">import</span> com.baomidou.mybatisplus.annotation.TableName;</span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * ClassName User</span></span><br><span class="line"><span class="comment"> * Description TODO</span></span><br><span class="line"><span class="comment"> * Author Lenovo</span></span><br><span class="line"><span class="comment"> * Date 2020/10/29</span></span><br><span class="line"><span class="comment"> * Version 1.0</span></span><br><span class="line"><span class="comment">**/</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@TableName</span>(<span class="string">"user"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@TableId</span>(type = IdType.AUTO)</span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="注解"><a href="#注解" class="headerlink" title="注解"></a>注解</h5><ul>
+<li><p><strong>@Data</strong></p>
+<p>这个不用多说了吧，这是我们经常看见的，主要使用的是一个Lombok插件，这个注解的作用呢，为我们大大简化来的开发效率，我们可以不用再写Getter和Setter方法</p>
+</li>
+<li><p><strong>@TableName</strong></p>
+<p>我们直接从字面意思就可以读出来吧，表名</p>
+</li>
+<li><p><strong>@TableId</strong></p>
+<p>表的Id，也就是主键Id</p>
+</li>
+</ul>
+<h4 id="创建Mapper"><a href="#创建Mapper" class="headerlink" title="创建Mapper"></a>创建Mapper</h4><blockquote>
+<p>新建一个Mapper来操作我们的数据库，和我们的MyBatis一样的，只不过我们这次需要在启动类上面加上一个主键来扫描我们的mapper类</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.codeworld.fc;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.mybatis.spring.annotation.MapperScan;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@MapperScan</span>(basePackages = &#123;<span class="string">"com.codeworld.fc.mapper"</span>&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DemoSpringBootMybatisplusApplication</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(DemoSpringBootMybatisplusApplication<span class="class">.<span class="keyword">class</span>, <span class="title">args</span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.codeworld.fc.mapper;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.baomidou.mybatisplus.core.mapper.BaseMapper;</span><br><span class="line"><span class="keyword">import</span> com.codeworld.fc.entity.User;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserMapper</span> <span class="keyword">extends</span> <span class="title">BaseMapper</span>&lt;<span class="title">User</span>&gt; </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样就简单的继承我们<strong>MyBatis-plus</strong>中的<strong>BaseMapper</strong>,泛型呢就是我们和数据库中配置的基本类了</p>
+<h4 id="创建UserService"><a href="#创建UserService" class="headerlink" title="创建UserService"></a>创建UserService</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.codeworld.fc.service;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.baomidou.mybatisplus.extension.service.IService;</span><br><span class="line"><span class="keyword">import</span> com.codeworld.fc.entity.User;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserService</span> <span class="keyword">extends</span> <span class="title">IService</span>&lt;<span class="title">User</span>&gt; </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个也差不多，也是继承我们<strong>MyBatis-plus</strong>中的<strong>IService</strong>，泛型也是我们的基本类</p>
+<h4 id="创建UserServiceImpl"><a href="#创建UserServiceImpl" class="headerlink" title="创建UserServiceImpl"></a>创建UserServiceImpl</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.codeworld.fc.service.impl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;</span><br><span class="line"><span class="keyword">import</span> com.codeworld.fc.entity.User;</span><br><span class="line"><span class="keyword">import</span> com.codeworld.fc.mapper.UserMapper;</span><br><span class="line"><span class="keyword">import</span> com.codeworld.fc.service.UserService;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * ClassName UserServiceImpl</span></span><br><span class="line"><span class="comment"> * Description TODO</span></span><br><span class="line"><span class="comment"> * Author Lenovo</span></span><br><span class="line"><span class="comment"> * Date 2020/10/29</span></span><br><span class="line"><span class="comment"> * Version 1.0</span></span><br><span class="line"><span class="comment">**/</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserServiceImpl</span> <span class="keyword">extends</span> <span class="title">ServiceImpl</span>&lt;<span class="title">UserMapper</span>, <span class="title">User</span>&gt; <span class="keyword">implements</span> <span class="title">UserService</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>继承了我们<strong>MyBatis-plus</strong>中的<strong>ServiceImpl</strong>类，实现我们自定义的<strong>UserService</strong></p>
+<p>可能会有点懵，我们只管继承什么什么，根本没有实现什么什么</p>
+<p>那就请继续往下看</p>
+<p><img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1502772899,4276092948&fm=26&gp=0.jpg" alt=""></p>
+<h4 id="创建UserController"><a href="#创建UserController" class="headerlink" title="创建UserController"></a>创建UserController</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.codeworld.fc.controller;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.codeworld.fc.entity.User;</span><br><span class="line"><span class="keyword">import</span> com.codeworld.fc.service.UserService;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.GetMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.PathVariable;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RestController;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * ClassName UserController</span></span><br><span class="line"><span class="comment"> * Description TODO</span></span><br><span class="line"><span class="comment"> * Author Lenovo</span></span><br><span class="line"><span class="comment"> * Date 2020/10/29</span></span><br><span class="line"><span class="comment"> * Version 1.0</span></span><br><span class="line"><span class="comment">**/</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"test-user"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span>(required = <span class="keyword">false</span>)</span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种常规操作应该懂吧</p>
+<p>总的呢从<strong>mapper</strong>到<strong>controller</strong>我们就创建完了</p>
+<p>接下来就是我们测试的时候呢</p>
+<h4 id="创建一个查询接口"><a href="#创建一个查询接口" class="headerlink" title="创建一个查询接口"></a>创建一个查询接口</h4><blockquote>
+<p>改造我们的UserController，在UserController中添加一个方法</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"test-user"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span>(required = <span class="keyword">false</span>)</span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 根据Id获取用户信息</span></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"get-user-id/&#123;id&#125;"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">getUserById</span><span class="params">(@PathVariable(<span class="string">"id"</span>)</span> Integer id)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.userService.getUserById(id);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>相继呢我们在UserService中也会新增一个方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserService</span> <span class="keyword">extends</span> <span class="title">IService</span>&lt;<span class="title">User</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 根据用户id获取用户</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> id</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function">User <span class="title">getUserById</span><span class="params">(Integer id)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.codeworld.fc.service.impl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;</span><br><span class="line"><span class="keyword">import</span> com.codeworld.fc.entity.User;</span><br><span class="line"><span class="keyword">import</span> com.codeworld.fc.mapper.UserMapper;</span><br><span class="line"><span class="keyword">import</span> com.codeworld.fc.service.UserService;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * ClassName UserServiceImpl</span></span><br><span class="line"><span class="comment"> * Description TODO</span></span><br><span class="line"><span class="comment"> * Author Lenovo</span></span><br><span class="line"><span class="comment"> * Date 2020/10/29</span></span><br><span class="line"><span class="comment"> * Version 1.0</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserServiceImpl</span> <span class="keyword">extends</span> <span class="title">ServiceImpl</span>&lt;<span class="title">UserMapper</span>, <span class="title">User</span>&gt; <span class="keyword">implements</span> <span class="title">UserService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span>(required = <span class="keyword">false</span>)</span><br><span class="line">    <span class="keyword">private</span> UserMapper userMapper;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 根据用户id获取用户</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> id</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">getUserById</span><span class="params">(Integer id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.userMapper.selectById(id);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>this.userMapper.selectById(id)</code>直接调用我们MyBatis-plus封装好的方法，就不用我们再去写Mapper文件了，不过呢，既然说是不做任何修改，那么还是可以通过mapper文件来实现的</p>
+<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><p>我们使用Postman来测试</p>
+<p><img src="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/10/%E6%A0%B9%E6%8D%AEid%E6%9F%A5%E8%AF%A2.png" alt=""></p>
+<p>这样我们的就实现成功了</p>
+<p>是不是感觉很简单呢</p>
+<p>其中帮我们定义好的方法呢有很多</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">insert</span><span class="params">(T entity)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">deleteById</span><span class="params">(Serializable id)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">deleteByMap</span><span class="params">(@Param(<span class="string">"cm"</span>)</span> Map&lt;String, Object&gt; columnMap)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">delete</span><span class="params">(@Param(<span class="string">"ew"</span>)</span> Wrapper&lt;T&gt; wrapper)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">deleteBatchIds</span><span class="params">(@Param(<span class="string">"coll"</span>)</span> Collection&lt;? extends Serializable&gt; idList)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">updateById</span><span class="params">(@Param(<span class="string">"et"</span>)</span> T entity)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">update</span><span class="params">(@Param(<span class="string">"et"</span>)</span> T entity, @<span class="title">Param</span><span class="params">(<span class="string">"ew"</span>)</span> Wrapper&lt;T&gt; updateWrapper)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">T <span class="title">selectById</span><span class="params">(Serializable id)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">List&lt;T&gt; <span class="title">selectBatchIds</span><span class="params">(@Param(<span class="string">"coll"</span>)</span> Collection&lt;? extends Serializable&gt; idList)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">List&lt;T&gt; <span class="title">selectByMap</span><span class="params">(@Param(<span class="string">"cm"</span>)</span> Map&lt;String, Object&gt; columnMap)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">T <span class="title">selectOne</span><span class="params">(@Param(<span class="string">"ew"</span>)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">Integer <span class="title">selectCount</span><span class="params">(@Param(<span class="string">"ew"</span>)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">List&lt;T&gt; <span class="title">selectList</span><span class="params">(@Param(<span class="string">"ew"</span>)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line"></span><br><span class="line">    List&lt;Map&lt;String, Object&gt;&gt; selectMaps(<span class="meta">@Param</span>(<span class="string">"ew"</span>) Wrapper&lt;T&gt; queryWrapper);</span><br><span class="line"></span><br><span class="line">    <span class="function">List&lt;Object&gt; <span class="title">selectObjs</span><span class="params">(@Param(<span class="string">"ew"</span>)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">IPage&lt;T&gt; <span class="title">selectPage</span><span class="params">(IPage&lt;T&gt; page, @Param(<span class="string">"ew"</span>)</span> Wrapper&lt;T&gt; queryWrapper)</span>;</span><br><span class="line"></span><br><span class="line">    IPage&lt;Map&lt;String, Object&gt;&gt; selectMapsPage(IPage&lt;T&gt; page, <span class="meta">@Param</span>(<span class="string">"ew"</span>) Wrapper&lt;T&gt; queryWrapper);</span><br></pre></td></tr></table></figure>
+
+<h4 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h4><p>今天呢我们的MyBatis-plus就只讲了入门的效果，就实现来一个查询功能，没有做到全面CRUD</p>
+<p>这就需要我们自己下来自己完成其他的功能，能转换成自己的才是真的学到了知识点。</p>
+<p>CRUD代码去：<a href="https://github.com/javaenigneer/SpringBoot-demo" target="_blank" rel="noopener">SpringBoot-demo</a></p>
+<p><img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2901848610,1493242756&fm=26&gp=0.jpg" alt=""></p>
+<p>好了，今天的分享就到这里了，，，完了，老板来了。。。我先溜了</p>
+<p>OK，在这里我们的分享就到这里了，不知道你有没有帮助到你呢？</p>
+<p>看到这里的人都是技术人才，你的浏览就是我前进的动力</p>
+<p>欢迎加入QQ群：</p>
+<p><img src="https://fcblog-1300450814.cos.ap-chengdu.myqcloud.com/2020/hexoblog/temp_qrcode_share_964285437.png" alt=""></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    CodeWorld
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://javaenigneer.github.io/2021/01/14/SpringBoot%E6%95%B4%E5%90%88MyBatisPlus/" title="SpringBoot整合MyBatisPlus">https://javaenigneer.github.io/2021/01/14/SpringBoot%E6%95%B4%E5%90%88MyBatisPlus/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/SpringBoot/" rel="tag"># SpringBoot</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/01/14/XXL-JOB%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E9%BB%98%E8%AE%A4%E4%BD%BF%E7%94%A8/" rel="next" title="XXL-JOB定时任务默认使用">
+                <i class="fa fa-chevron-left"></i> XXL-JOB定时任务默认使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/01/22/XXL-JOB%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BA%E4%BB%BB%E5%8A%A1%E8%AF%A6%E8%A7%A3%E7%AF%871/" rel="prev" title="XXL-JOB动态创建任务详解篇1">
+                XXL-JOB动态创建任务详解篇1 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.gif"
+                alt="CodeWorld" />
+            
+              <p class="site-author-name" itemprop="name">CodeWorld</p>
+              <p class="site-description motion-element" itemprop="description">越努力，越幸运</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/javaenigneer" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="1692454247@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://github.com/" title="Github" target="_blank">Github</a>
+                  </li>
+                
+              </ul>
+              <div id="days"></div>
+<script>
+function show_date_time(){
+    window.setTimeout("show_date_time()", 1000);
+    BirthDay=new Date("04/10/2019 12:13:14");
+    today=new Date();
+    timeold=(today.getTime()-BirthDay.getTime());
+    sectimeold=timeold/1000
+    secondsold=Math.floor(sectimeold);
+    msPerDay=24*60*60*1000
+    e_daysold=timeold/msPerDay
+    daysold=Math.floor(e_daysold);
+    e_hrsold=(e_daysold-daysold)*24;
+    hrsold=setzero(Math.floor(e_hrsold));
+    e_minsold=(e_hrsold-hrsold)*60;
+    minsold=setzero(Math.floor((e_hrsold-hrsold)*60));
+    seconds=setzero(Math.floor((e_minsold-minsold)*60));
+    document.getElementById('days').innerHTML="已运行 "+daysold+" 天 "+hrsold+" 小时 "+minsold+" 分 "+seconds+" 秒";
+}
+function setzero(i) {
+    if (i<10) {
+        i="0" + i
+    };
+    return i;
+}
+show_date_time();
+</script>
+
+            </div>
+          
+
+          <div id="days"></div>
+<script>
+function show_date_time(){
+    window.setTimeout("show_date_time()", 1000);
+    BirthDay=new Date("04/10/2019 12:13:14");
+    today=new Date();
+    timeold=(today.getTime()-BirthDay.getTime());
+    sectimeold=timeold/1000
+    secondsold=Math.floor(sectimeold);
+    msPerDay=24*60*60*1000
+    e_daysold=timeold/msPerDay
+    daysold=Math.floor(e_daysold);
+    e_hrsold=(e_daysold-daysold)*24;
+    hrsold=setzero(Math.floor(e_hrsold));
+    e_minsold=(e_hrsold-hrsold)*60;
+    minsold=setzero(Math.floor((e_hrsold-hrsold)*60));
+    seconds=setzero(Math.floor((e_minsold-minsold)*60));
+    document.getElementById('days').innerHTML="已运行 "+daysold+" 天 "+hrsold+" 小时 "+minsold+" 分 "+seconds+" 秒";
+}
+function setzero(i) {
+    if (i<10) {
+        i="0" + i
+    };
+    return i;
+}
+show_date_time();
+</script>
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#特性"><span class="nav-number">2.</span> <span class="nav-text">特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建项目"><span class="nav-number">3.</span> <span class="nav-text">创建项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编写POM文件"><span class="nav-number">4.</span> <span class="nav-text">编写POM文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编写application-yml文件"><span class="nav-number">5.</span> <span class="nav-text">编写application.yml文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建数据库test，创建表user"><span class="nav-number">6.</span> <span class="nav-text">创建数据库test，创建表user</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置类"><span class="nav-number">7.</span> <span class="nav-text">配置类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户类User"><span class="nav-number">8.</span> <span class="nav-text">用户类User</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#注解"><span class="nav-number">8.1.</span> <span class="nav-text">注解</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建Mapper"><span class="nav-number">9.</span> <span class="nav-text">创建Mapper</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建UserService"><span class="nav-number">10.</span> <span class="nav-text">创建UserService</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建UserServiceImpl"><span class="nav-number">11.</span> <span class="nav-text">创建UserServiceImpl</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建UserController"><span class="nav-number">12.</span> <span class="nav-text">创建UserController</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建一个查询接口"><span class="nav-number">13.</span> <span class="nav-text">创建一个查询接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试"><span class="nav-number">14.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结束"><span class="nav-number">15.</span> <span class="nav-text">结束</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 &mdash; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">CodeWorld</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      你是来访的第
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      位小伙伴
+    </span>
+  
+
+  
+    <span class="site-pv">
+      访问次数：
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'pcElkxj59x36vSvxVsiJiwW8-gzGzoHsz',
+        appKey: 'gpN19IqqR1PyPEXyladMiHeQ',
+        placeholder: '留下邮箱，有回复时你将收到提醒，邮箱不会被公开',
+        avatar:'wavatar',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("pcElkxj59x36vSvxVsiJiwW8-gzGzoHsz", "gpN19IqqR1PyPEXyladMiHeQ");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: ,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+
+</body>
+</html>
